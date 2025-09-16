@@ -1,0 +1,6 @@
+services:
+  sofis.api:
+    image: ${DOCKER_REGISTRY-}sofisapi
+    build:
+      context: .
+      dockerfile: Sofis.Api/Dockerfile

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sofis.Api", "Sofis.Api\Sofis.Api.csproj", "{A924A88B-A17B-4DF1-8A9B-2C334BF7577B}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{664EAB8C-E2AD-4AD0-91FE-50B975EB8744}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A924A88B-A17B-4DF1-8A9B-2C334BF7577B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A924A88B-A17B-4DF1-8A9B-2C334BF7577B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A924A88B-A17B-4DF1-8A9B-2C334BF7577B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A924A88B-A17B-4DF1-8A9B-2C334BF7577B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{664EAB8C-E2AD-4AD0-91FE-50B975EB8744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{664EAB8C-E2AD-4AD0-91FE-50B975EB8744}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{664EAB8C-E2AD-4AD0-91FE-50B975EB8744}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{664EAB8C-E2AD-4AD0-91FE-50B975EB8744}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
