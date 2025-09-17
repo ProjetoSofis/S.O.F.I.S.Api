@@ -2,6 +2,10 @@
 {
     public class ReportDto
     {
-        public Guid Id
+        public Guid Idc { get; set; }
+        public Guid EmployeeId { get; set; }
+        public DateTime PeriodoStart { get; set; }
+        public DateTime PeriodoEnd { get; set; }
+        public List<RecordDto> Records { get; set; }
     }
 }
