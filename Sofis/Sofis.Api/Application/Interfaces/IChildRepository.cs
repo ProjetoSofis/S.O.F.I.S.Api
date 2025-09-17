@@ -1,7 +1,7 @@
 ﻿using Sofis.Api.Domain.Entities;
 namespace Sofis.Api.Application.Interfaces
 {
-    public interface IChildRepositoy
+    public interface IChildRepository
     {
         Task AddAsync(Child Child);
         Task<Child?> GetByIdAsync(Guid id);
