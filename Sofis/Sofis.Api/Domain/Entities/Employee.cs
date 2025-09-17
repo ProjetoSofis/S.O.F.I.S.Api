@@ -9,7 +9,7 @@
         public string PasswordHash { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
-        public Employee() { }
+        private Employee() { }
 
         public Employee(string name, string email, string phone, string passwordHash)
         {

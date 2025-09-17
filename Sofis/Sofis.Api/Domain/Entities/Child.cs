@@ -10,7 +10,7 @@
         public readonly List<Annotation> _annotations = new();
         public IReadOnlyCollection<Annotation> Annotations => _annotations.AsReadOnly();
 
-        public Child() { }
+        private Child() { }
 
         public Child(string name, DateTime birthDate, string responsible)
         {
