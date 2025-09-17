@@ -2,5 +2,6 @@
 {
     public class ReportDto
     {
+        public Guid Id
     }
 }
