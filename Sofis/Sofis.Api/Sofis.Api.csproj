@@ -14,4 +14,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Api\" />
+    <Folder Include="Application\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Infrastructure\" />
+    <Folder Include="tests\Sofis.IntegrationTests\" />
+    <Folder Include="tests\Sofis.UnitTests\" />
+  </ItemGroup>
+
 </Project>
