@@ -13,7 +13,7 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
             _context = context;
 
         }
-        public async Task<Child> GetByIdAsync(Guid id)
+        public async Task<Child?> GetByIdAsync(Guid id)
         {
             return await _context.Childs
                 .Include(c => c.Annotations)
