@@ -9,9 +9,9 @@
 
         private Annotation() { }
 
-        public Annotation(Guid id, Guid employeeId, DateTime date, string note)
+        public Annotation(Guid employeeId, DateTime date, string note)
         {
-            Id = id;
+            Id = Guid.NewGuid();
             EmployeeId = employeeId;
             Date = date;
             Note = note;
