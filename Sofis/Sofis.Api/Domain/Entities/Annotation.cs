@@ -7,7 +7,7 @@
         public DateTime Date { get; private set; }
         public string Note { get; private set; }
 
-        private Annotation() { }
+        public Annotation() { }
 
         public Annotation(Guid employeeId, DateTime date, string note)
         {
