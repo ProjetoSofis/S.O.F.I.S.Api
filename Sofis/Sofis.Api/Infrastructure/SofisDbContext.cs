@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sofis.Api.Domain.Entities;
-namespace Sofis.Api.Infrastructure.Persistence;
+namespace Sofis.Api.Infrastructure;
 
 public class SofisDbContext : DbContext
 {
