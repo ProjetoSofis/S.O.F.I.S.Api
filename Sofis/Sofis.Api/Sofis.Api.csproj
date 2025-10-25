@@ -23,6 +23,7 @@
   <ItemGroup>
     <Folder Include="Api\" />
     <Folder Include="Controllers\" />
+    <Folder Include="Migrations\" />
     <Folder Include="tests\Sofis.IntegrationTests\" />
     <Folder Include="tests\Sofis.UnitTests\" />
   </ItemGroup>
