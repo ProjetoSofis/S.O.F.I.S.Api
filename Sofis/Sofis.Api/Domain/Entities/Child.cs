@@ -1,16 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Sofis.Api.Domain.Entities
 {
-    public class Child
+    public class Child : BaseEntity
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
+
+        public string Cpf { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime BirthDate { get; set; }
         public string Responsible { get; set; }
 
-        public readonly List<Annotation> _annotations = new();
-        public IReadOnlyCollection<Annotation> Annotations => _annotations.AsReadOnly();
+        public List<Family> FamilyMembers { get; private set; } = new();
+
+        public readonly List<Report> _annotations = new();
+        public IReadOnlyCollection<Report> Annotations => _annotations.AsReadOnly();
 
         public Child() { }
 
@@ -20,11 +26,17 @@ namespace Sofis.Api.Domain.Entities
             Name = name;
             BirthDate = birthDate;
             Responsible = responsible;
+            CreatedAt = DateTime.UtcNow;
         }
 
-        public void AddAnnotation(string text, DateTime date, Guid employeeId)
+        //public void AddAnnotation(string text, DateTime date, Guid employeeId)
+        //{
+        //    _annotations.Add(new Report(employeeId, date, text));
+        //}
+
+        public void AddFamilyMember(Family familyMember)
         {
-            _annotations.Add(new Annotation(employeeId, date, text));
+            FamilyMembers.Add(familyMember);
         }
     }
 }
