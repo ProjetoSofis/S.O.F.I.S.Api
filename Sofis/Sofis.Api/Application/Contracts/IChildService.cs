@@ -1,4 +1,5 @@
 ﻿using Sofis.Api.Application.Dtos;
+using Sofis.Api.Application.Dtos.ChildDtos;
 
 namespace Sofis.Api.Application.Contracts
 {
@@ -7,6 +8,8 @@ namespace Sofis.Api.Application.Contracts
         Task<ChildDto> RegisterChildAsync(CreateChildDto dto);
         Task<IEnumerable<ChildDto>> GetAllAsync();
         Task<ChildDto?> GetByIdAsync(Guid id);
+        Task<ChildDto?> GetByCpfASync(string cpf);
+        Task<ChildDto> UpdateChildAsync(UpdateChildDto dto);
         
     }
 }
