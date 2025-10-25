@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Sofis.Api.Application.Contracts;
-using Sofis.Api.Application.Dtos;
+using Sofis.Api.Application.Dtos.ChildDtos;
 
 namespace Sofis.Api.Controllers
 {
@@ -20,8 +21,29 @@ namespace Sofis.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateChildDto dto)
         {
-            var created = await _childService.RegisterChildAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            try 
+            {
+                var created = await _childService.RegisterChildAsync(dto);
+                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(new
+                {
+                    error = "Erro ao salvar a criança no banco de dados.",
+                    details = ex.InnerException?.Message ?? ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao criar a criança.");
+                return StatusCode(500, new
+                {
+                    error = "Erro interno do servidor.",
+                    details = ex.Message
+                });
+            }
+            
         }
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -39,5 +61,16 @@ namespace Sofis.Api.Controllers
             }
             return Ok(child);
         }
+        [HttpGet("cpf/{cpf}")]
+        public async Task<IActionResult> GetByCpf(string cpf)
+        {
+            var child = await _childService.GetByCpfASync(cpf);
+            if (child == null)
+            {
+                return NotFound();
+            }
+            return Ok(child);
+        }
+
     }
 }
