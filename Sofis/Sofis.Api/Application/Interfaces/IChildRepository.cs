@@ -5,7 +5,9 @@ namespace Sofis.Api.Application.Interfaces
     {
         Task AddAsync(Child Child);
         Task<Child?> GetByIdAsync(Guid id);
+        Task<Child?> GetByCpfAsync(string cpf);
         Task<IEnumerable<Child>> GetAllAsync();
         Task DeleteAsync(Guid id);
+        Task UpdateAsync(Child Child);
     }
 }
