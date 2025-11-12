@@ -48,5 +48,12 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
             return await _context.Child
                 .FirstOrDefaultAsync(c => c.Cpf == cpf);
         }
+
+        public async Task<IEnumerable<Child>> GetByNameAsync(string name)
+        {
+            return await _context.Child
+                .Where(c => c.Name.Contains(name))
+                .ToListAsync();
+        }
     }
 }
