@@ -1,17 +1,27 @@
 ﻿namespace Sofis.Api.Domain.Entities
 {
+    public enum Role
+    {
+        User,
+        Psicólogo,
+        Psicopedagogo
+    }
     public class Employee : BaseEntity
     {
-        public string Name { get; private set; }
-        public string Email { get; private set; }
-        public string Phone { get; private set; }
-        public string PasswordHash { get; private set; }
-        public string Role { get; private set; } = "User";
-        public bool IsActive { get; private set; } = true;
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string Cpf { get; set; }
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
+        public Role Role { get; set; }
+        public bool IsActive { get; set; } = true;
+        public bool IsTwoFactorEnabled { get; set; } = false;
+        public string? TwoFactorSecret { get; set; }
 
         public Employee() { }
 
-        public Employee(string name, string role, string email, string phone, string passwordHash)
+        public Employee(string name, Role role, string email, string phone, byte[] passwordHash, byte[] passwordSalt)
         {
             Id = Guid.NewGuid();
             Name = name;
@@ -19,7 +29,9 @@
             Email = email;
             Phone = phone;
             PasswordHash = passwordHash;
+            PasswordSalt = passwordSalt;
             CreatedAt = DateTime.UtcNow;
+            IsActive = true;
         }
     }
 }
