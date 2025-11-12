@@ -5,7 +5,9 @@
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Cpf { get; set; }
-        public DateTime BirthDate { get; set; }
+        public DateOnly BirthDate { get; set; }
         public string? Responsible { get; set; }
+        public string? MomName { get; set; }
+        public string? DadName { get; set; }
     }
 }
