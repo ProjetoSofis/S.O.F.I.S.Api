@@ -43,8 +43,8 @@ namespace Sofis.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Cpf")
                         .IsRequired()
@@ -53,6 +53,14 @@ namespace Sofis.Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("DadName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MomName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -60,6 +68,9 @@ namespace Sofis.Api.Migrations
                     b.Property<string>("Responsible")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -75,6 +86,10 @@ namespace Sofis.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Cpf")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -85,20 +100,29 @@ namespace Sofis.Api.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsTwoFactorEnabled")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<byte[]>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("bytea");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("bytea");
 
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
+                    b.Property<int>("Role")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TwoFactorSecret")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -119,7 +143,7 @@ namespace Sofis.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Contact")
+                    b.Property<string>("Cpf")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -135,6 +159,10 @@ namespace Sofis.Api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -176,7 +204,7 @@ namespace Sofis.Api.Migrations
 
                     b.HasIndex("ChildId");
 
-                    b.ToTable("Report");
+                    b.ToTable("Reports");
                 });
 
             modelBuilder.Entity("ChildFamily", b =>
@@ -196,13 +224,11 @@ namespace Sofis.Api.Migrations
 
             modelBuilder.Entity("Sofis.Api.Domain.Entities.Report", b =>
                 {
-                    b.HasOne("Sofis.Api.Domain.Entities.Child", "Child")
+                    b.HasOne("Sofis.Api.Domain.Entities.Child", null)
                         .WithMany("Annotations")
                         .HasForeignKey("ChildId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Child");
                 });
 
             modelBuilder.Entity("Sofis.Api.Domain.Entities.Child", b =>
