@@ -11,6 +11,9 @@ namespace Sofis.Api.Application.Services
     public class ChildService : IChildService
     {
         private readonly IChildRepository _childRepository;
+        private DateTime nowDate = DateTime.Today;
+        private DateOnly now = DateOnly.FromDateTime(DateTime.Today);
+
 
         public ChildService(IChildRepository childRepository)
         {
@@ -40,7 +43,12 @@ namespace Sofis.Api.Application.Services
             {
                 throw new ValidationException("Nome é obrigatório");
             }
-            if (dto.BirthDate > DateTime.UtcNow.Date)
+            // Comentário - Vinicius: Obter o DateTime atual (apenas a data, com a hora zerada)
+            nowDate = DateTime.Today;
+
+            // Comentário - Vinicius: Converter para DateOnly
+            now = DateOnly.FromDateTime(nowDate);
+            if (dto.BirthDate > now)
             {
                 throw new ValidationException("Data de nascimento não pode ser no futuro");
             }
@@ -52,8 +60,10 @@ namespace Sofis.Api.Application.Services
             {
                 Name = dto.Name.Trim(),
                 Cpf = dto.Cpf,
-                BirthDate = dto.BirthDate.Date,
-                Responsible = dto.Responsible.Trim()
+                BirthDate = dto.BirthDate,
+                Responsible = dto.Responsible.Trim(),
+                MomName = dto.MomName,
+                DadName = dto.DadName
             };
             await _childRepository.AddAsync(child);
 
@@ -66,7 +76,12 @@ namespace Sofis.Api.Application.Services
             {
                 throw new ValidationException("Nome é obrigatório");
             }
-            if (dto.BirthDate > DateTime.UtcNow.Date)
+            // Comentário - Vinicius: Obter o DateTime atual (apenas a data, com a hora zerada)
+            nowDate = DateTime.Today;
+
+            // Comentário - Vinicius: Converter para DateOnly
+            now = DateOnly.FromDateTime(nowDate);
+            if (dto.BirthDate > now)
             {
                 throw new ValidationException("Data de nascimento não pode ser no futuro");
             }
@@ -74,7 +89,10 @@ namespace Sofis.Api.Application.Services
             {
                 Name = dto.Name.Trim(),
                 BirthDate = dto.BirthDate,
-                Responsible = dto.Responsible.Trim()
+                Responsible = dto.Responsible.Trim(),
+                MomName = dto.MomName,
+                DadName = dto.DadName,
+                Cpf = dto.Cpf
             };
             await _childRepository.UpdateAsync(child);
             return MapToDto(child);
@@ -89,6 +107,20 @@ namespace Sofis.Api.Application.Services
             }
             await _childRepository.DeleteAsync(id);
         }
+        public async Task<ChildDto?> GetByCpfASync(string cpf)
+        {
+            var child = _childRepository.GetByCpfAsync(cpf);
+            if (child == null)
+            {
+                return await Task.FromResult<ChildDto?>(null);
+            }
+            return await Task.FromResult<ChildDto?>(MapToDto(child.Result));
+        }
+        public async Task<IEnumerable<ChildDto>> GetByNameAsync(string name)
+        {
+            var childs = await _childRepository.GetByNameAsync(name);
+            return childs.Select(MapToDto);
+        }
 
         private ChildDto MapToDto(Child c) =>
             new ChildDto
@@ -96,17 +128,12 @@ namespace Sofis.Api.Application.Services
                 Id = c.Id,
                 Name = c.Name,
                 BirthDate = c.BirthDate,
-                Responsible = c.Responsible
+                Responsible = c.Responsible,
+                MomName = c.MomName,
+                DadName = c.DadName,
+                Cpf = c.Cpf
+                
             };
 
-        public Task<ChildDto?> GetByCpfASync(string cpf)
-        {
-            var child = _childRepository.GetByCpfAsync(cpf);
-            if (child == null)
-            {
-                return Task.FromResult<ChildDto?>(null);
-            }
-            return Task.FromResult<ChildDto?>(MapToDto(child.Result));
-        }
     }
 }
