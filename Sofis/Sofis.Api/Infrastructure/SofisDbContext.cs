@@ -6,7 +6,7 @@ public class SofisDbContext : DbContext
 {
     public SofisDbContext(DbContextOptions<SofisDbContext> options) : base(options) { }
     public DbSet<Child> Child { get; set; }
-    public DbSet<Report> Registros { get; set; }
+    public DbSet<Family> Family { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Report> Reports { get; set; }
 
