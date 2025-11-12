@@ -10,5 +10,7 @@ namespace Sofis.Api.Application.Interfaces
         Task UpdateAsync(Employee employee);
         Task DeleteAsync(Guid id);
         Task<Employee?> GetByEmailAsync(string email);
+        Task<IEnumerable<Employee>> GetByNameAsync(string name);
+        Task<Employee?> GetByCpfAsync(string cpf);
     }
 }
