@@ -72,5 +72,16 @@ namespace Sofis.Api.Controllers
             return Ok(child);
         }
 
+        [HttpGet("name/{name}")]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            var children = await _childService.GetByNameAsync(name);
+            if (children == null)
+            {
+                return NotFound();
+            }
+            return Ok(children);
+        }
+
     }
 }
