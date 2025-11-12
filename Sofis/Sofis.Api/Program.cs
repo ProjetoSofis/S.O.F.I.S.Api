@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using Sofis.Api.Application;
 using Sofis.Api.Application.Contracts;
 using Sofis.Api.Application.Interfaces;
 using Sofis.Api.Application.Services;
@@ -13,9 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 //    options.ListenAnyIP(80);
 //});
 var connectionString = builder.Configuration.GetConnectionString("Default");
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 // Add services to the container.
-builder.Services.AddScoped<IChildRepository, ChildRepository>();
+//builder.Services.AddScoped<IChildRepository, ChildRepository>();
+//builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+//builder.Services.AddScoped<IFamilyRepository, FamilyRepository>(); 
 
 builder.Services.AddCors(options =>
 {
@@ -27,7 +32,11 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddScoped<IChildService, ChildService>();
+//builder.Services.AddScoped<IChildService, ChildService>();
+//builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+//builder.Services.AddScoped<IPasswordService, PasswordService>();
+//builder.Services.AddScoped<IFamilyService, FamilyService>();
+//builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddControllers();
 
