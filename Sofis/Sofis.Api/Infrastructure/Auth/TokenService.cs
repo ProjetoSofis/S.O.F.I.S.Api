@@ -1,7 +1,6 @@
 ﻿using Sofis.Api.Application.Interfaces;
 using Sofis.Api.Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.IdentityModel.JsonWebTokens;
 using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
@@ -28,10 +27,17 @@ namespace Sofis.Api.Infrastructure.Auth
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
             var claims = new List<Claim>
             {
-                new Claim("Id", employee.Id.ToString()),
-                new Claim("Id", Guid.NewGuid().ToString()),
-                new Claim("email".Email, employee.Email),
-                new Claim("role", employee.Role.ToString())
+                // Sub (Subject) é o ID principal do usuário
+                new Claim(JwtRegisteredClaimNames.Sub, employee.Id.ToString()),
+                
+                // Jti (JWT ID) é um ID único para este token
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                
+                // Email do usuário
+                new Claim(JwtRegisteredClaimNames.Email, employee.Email),
+                
+                // Role (Função) - Essencial para autorização
+                new Claim(ClaimTypes.Role, employee.Role.ToString())
             };
             var tokenDescriptor = new SecurityTokenDescriptor
             {
