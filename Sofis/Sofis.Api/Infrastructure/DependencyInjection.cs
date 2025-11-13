@@ -1,4 +1,7 @@
-﻿using Sofis.Api.Application.Interfaces;
+﻿using Sofis.Api.Application.Contracts;
+using Sofis.Api.Application.Interfaces;
+using Sofis.Api.Application.Services;
+using Sofis.Api.Infrastructure.Auth;
 using Sofis.Api.Infrastructure.Persistence.Repositories;
 
 namespace Sofis.Api.Infrastructure
@@ -11,6 +14,7 @@ namespace Sofis.Api.Infrastructure
             services.AddScoped<IChildRepository, ChildRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IFamilyRepository, FamilyRepository>();
+            services.AddScoped<IEmailService, SmtpEmailService>();
             return services;
         }
     }
