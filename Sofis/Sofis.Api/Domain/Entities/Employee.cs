@@ -17,7 +17,8 @@
         public Role Role { get; set; }
         public bool IsActive { get; set; } = true;
         public bool IsTwoFactorEnabled { get; set; } = false;
-        public string? TwoFactorSecret { get; set; }
+        public string? TwoEmailCode { get; set; }
+        public DateTime? TwoFactorEmailCodeExpiration { get; set; }
 
         public Employee() { }
 
