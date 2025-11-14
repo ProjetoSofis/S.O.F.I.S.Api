@@ -40,7 +40,7 @@ namespace Sofis.Api.Application.Services
                 employee.TwoFactorEmailCodeExpiration = DateTime.UtcNow.AddMinutes(10);
                 await _employeeRepository.UpdateAsync(employee);
                 var subject = "Seu código de verificação de dois fatores";
-                var body = $"Olá {employee.Name}, <br><br>Seu código de autenticação é: <strong>{code}</strong><br><br>Este código expira em 10 minutos.";
+                var body = $"Olá {employee.Name}, Foi aqui que pediram um código de verificação? 😊 <br><br>Seu código de autenticação é: <strong>{code}</strong><br><br>Este código expira em 10 minutos.";
                 await _emailService.SendEmailAsync(employee.Email, subject, body);
                 return new LoginResponseDto { IsTwoFactorRequired = true };
             }
