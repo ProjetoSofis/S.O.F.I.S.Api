@@ -105,6 +105,7 @@ namespace Sofis.Api.Application.Services
             existingEmployee.Cpf = dto.Cpf;
             existingEmployee.Role = dto.Role;
             existingEmployee.IsActive = dto.IsActive;
+            existingEmployee.IsTwoFactorEnabled = dto.IsTwoFactorEnabled;
 
             if (!string.IsNullOrWhiteSpace(dto.Password))
             {
