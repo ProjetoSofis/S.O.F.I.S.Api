@@ -98,15 +98,7 @@ namespace Sofis.Api.Application.Services
             return MapToDto(child);
         }
 
-        public async Task DeleteChildAsync(Guid id)
-        {
-            var existingChild = await _childRepository.GetByIdAsync(id);
-            if (existingChild == null)
-            {
-                throw new ValidationException("Criança não encontrada");
-            }
-            await _childRepository.DeleteAsync(id);
-        }
+        
         public async Task<ChildDto?> GetByCpfASync(string cpf)
         {
             var child = _childRepository.GetByCpfAsync(cpf);
@@ -135,5 +127,42 @@ namespace Sofis.Api.Application.Services
                 
             };
 
+        public async Task<ChildDto> UpdateChildAsync(Guid id, UpdateChildDto dto)
+        {
+            var existingChild = await _childRepository.GetByIdAsync(id);
+            if (existingChild == null)
+            {
+                throw new Exception("Criança não encontrada");
+            }
+            existingChild.Name = dto.Name;
+            existingChild.Cpf = dto.Cpf;
+            existingChild.BirthDate = dto.BirthDate;
+            existingChild.DadName = dto.DadName;
+            existingChild.MomName = dto.MomName;
+            existingChild.Responsible = dto.Responsible;
+            await _childRepository.UpdateAsync(existingChild);
+            
+        }
+
+        public async Task DeleteChildAsync(Guid id)
+        {
+            var existingChild = await _childRepository.GetByIdAsync(id);
+            if (existingChild == null)
+            {
+                throw new ValidationException("Criança não encontrada");
+            }
+            await _childRepository.DeleteAsync(id);
+        }
+
+        private ChildDto MapToDto(Child c) =>
+            new ChildDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Cpf = c.Cpf,
+                MomName = c.MomName,
+                DadName = c.DadName,
+                Responsible = c.Responsible,
+            };
     }
 }
