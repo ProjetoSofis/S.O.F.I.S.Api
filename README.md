@@ -37,7 +37,7 @@ Execute a aplicação a partir do diretório raiz do projeto Sofis.Api:
 Após iniciar a aplicação, você pode testar os endpoints através da documentação do Swagger/OpenAPI.
 Acessando o Swagger UI
 Abra o navegador e acesse:
-https://localhost:7000/swagger
+https://localhost:7221/swagger
 
 ## 📄 Licença
 Este projeto está licenciado sob a Licença MIT.
