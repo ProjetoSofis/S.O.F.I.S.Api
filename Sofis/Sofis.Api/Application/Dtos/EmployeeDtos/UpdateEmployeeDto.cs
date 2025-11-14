@@ -12,5 +12,6 @@ namespace Sofis.Api.Application.Dtos.EmployeeDtos
         public Role Role { get; set; }
         public bool IsActive { get; set; }
         public string? Password { get; set; }
+        public bool IsTwoFactorEnabled { get; set; }
     }
 }
