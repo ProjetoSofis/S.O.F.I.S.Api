@@ -8,9 +8,9 @@ namespace Sofis.Api.Application.Services
     public class SmtpEmailService : IEmailService
     {
         private readonly IConfiguration _configuration;
-        public SmtpEmailService(IConfiguration _configuration)
+        public SmtpEmailService(IConfiguration configuration)
         {
-            _configuration = _configuration;
+            _configuration = configuration;
         }
         public async Task SendEmailAsync(string toEmail, string subject, string body)
         {
