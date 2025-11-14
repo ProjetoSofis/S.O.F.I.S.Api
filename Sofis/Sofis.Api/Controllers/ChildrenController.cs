@@ -82,6 +82,44 @@ namespace Sofis.Api.Controllers
             }
             return Ok(children);
         }
+        [HttpPut]
+        [Route("atualizarCrianca/{id:guid}")]
+        public async Task<IActionResult> UpdateChild(Guid id, [FromBody] UpdateChildDto dto)
+        {
+            try
+            {
+                var updated = await _childService.UpdateChildAsync(id, dto);
+                if (updated == null)
+                {
+                    return NotFound();
+                }
+                return Ok(updated);
+            }
+            catch (DbUpdateException ex) { 
+                return BadRequest(new { 
+                    error = "Erro ao atualizar criança no banco de Dados.",
+                    details = ex.InnerException?.Message ?? ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao atualizar criança.");
+                return StatusCode(500, new
+                {
+                    error = "Erro interno do servidor",
+                    details = ex.Message
+                });
+            }
+        }
 
+        [HttpDelete]
+        [Route("deletarCrianca/{id:guid}")]
+        public async Task<IActionResult> DeleteChild(Guid id)
+        {
+            try
+            {
+                await _childService
+            }
+        }
     }
 }
