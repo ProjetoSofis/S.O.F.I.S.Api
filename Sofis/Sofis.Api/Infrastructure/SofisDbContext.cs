@@ -14,6 +14,14 @@ public class SofisDbContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(SofisDbContext).Assembly);
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Child>(entity =>
+        {
+            // Configura a relação "Um-para-Muitos"
+            entity.HasMany(c => c.Reports)
+                  .WithOne(r => r.Child)
+                  .HasForeignKey(r => r.ChildId)
+                  .OnDelete(DeleteBehavior.Restrict);
+        });
     }
 
 }
