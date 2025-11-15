@@ -118,7 +118,25 @@ namespace Sofis.Api.Controllers
         {
             try
             {
-                await _childService
+                await _childService.DeleteChildAsync(id);
+                return NoContent();
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(new
+                {
+                    error = "Erro ao deletar criança no banco de Dados.",
+                    details = ex.InnerException?.Message ?? ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao deletar criança.");
+                return StatusCode(500, new
+                {
+                    error = "Erro interno do servidor",
+                    details = ex.Message
+                });
             }
         }
     }
