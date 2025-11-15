@@ -1,28 +1,53 @@
-﻿namespace Sofis.Api.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+
+namespace Sofis.Api.Domain.Entities
 {
-    public class Child
+    public enum Status
     {
-        public Guid Id { get; private set; }
-        public string Name { get; private set; }
-        public DateTime BirthDate { get; private set; }
-        public string Responsible { get; private set; }
+        Ativo,
+        Inativo
+    }
+    public class Child : BaseEntity
+    {
+        public string Name { get; set; }
 
-        public readonly List<Annotation> _annotations = new();
-        public IReadOnlyCollection<Annotation> Annotations => _annotations.AsReadOnly();
+        public string Cpf { get; set; }
 
-        private Child() { }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true)]
+        public DateOnly BirthDate { get; set; }
+        public string Responsible { get; set; }
 
-        public Child(string name, DateTime birthDate, string responsible)
+        public string MomName { get; set; }
+        public string DadName { get; set; }
+        public Status Status { get; set; }
+        public List<Family> FamilyMembers { get; private set; } = new();
+
+        public ICollection<Report> Reports { get; private set; } = new List<Report>();
+
+        public Child() { }
+
+        public Child(string name, DateOnly birthDate, string responsible, string momName, string dadName, Status status)
         {
             Id = Guid.NewGuid();
             Name = name;
             BirthDate = birthDate;
             Responsible = responsible;
+            MomName = momName;
+            DadName = dadName;
+            Status = status;
+            CreatedAt = DateTime.UtcNow;
         }
 
-        public void AddAnnotation(string text, Guid employeeId)
+        //public void AddAnnotation(string text, DateOnly date, Guid employeeId)
+        //{
+        //    _annotations.Add(new Report(employeeId, date, text));
+        //}
+
+        public void AddFamilyMember(Family familyMember)
         {
-            _annotations.Add(new Annotation(employeeId, text));
+            FamilyMembers.Add(familyMember);
         }
     }
 }
