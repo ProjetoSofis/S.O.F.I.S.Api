@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Sofis.Api.Infrastructure;
@@ -11,9 +12,11 @@ using Sofis.Api.Infrastructure;
 namespace Sofis.Api.Migrations
 {
     [DbContext(typeof(SofisDbContext))]
-    partial class SofisDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251115023446_AddChildReportRelationship")]
+    partial class AddChildReportRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
