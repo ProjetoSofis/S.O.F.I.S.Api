@@ -5,7 +5,9 @@
         public Guid EmployeeId { get; private set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
+        public Employee Employee { get; private set; }
         public Guid ChildId { get; private set; }
+        public Child Child { get; private set; }
 
         private Report() { }
 
