@@ -62,7 +62,7 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
             var existingEmployee = _context.Employees.Find(employee.Id);
             if (existingEmployee != null)
             {
-                _context.Employees.Update(employee);
+                _context.Employees.Update(existingEmployee);
                 await _context.SaveChangesAsync();
             }
         }
