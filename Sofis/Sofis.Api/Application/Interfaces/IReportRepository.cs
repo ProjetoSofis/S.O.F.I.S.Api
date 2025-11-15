@@ -6,7 +6,7 @@ namespace Sofis.Api.Application.Interfaces
     {
         Task AddAsync(Report report);
         Task<Report?> GetByIdAsync(Guid id);
-        Task<IEnumerable<Report>> GetAllAsync();
+        Task<IEnumerable<Report>> GetAllByChildIdAsync(Guid childId);
         Task DeleteAsync(Guid id);
         Task UpdateAsync(Report report);
     }
