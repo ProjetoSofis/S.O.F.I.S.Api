@@ -16,7 +16,7 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
         public async Task<Child?> GetByIdAsync(Guid id)
         {
             return await _context.Child
-                .Include(c => c.Annotations)
+                .Include(c => c.Reports)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
         public async Task<IEnumerable<Child>> GetAllAsync()
