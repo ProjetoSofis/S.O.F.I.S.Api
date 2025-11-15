@@ -114,19 +114,6 @@ namespace Sofis.Api.Application.Services
             return childs.Select(MapToDto);
         }
 
-        private ChildDto MapToDto(Child c) =>
-            new ChildDto
-            {
-                Id = c.Id,
-                Name = c.Name,
-                BirthDate = c.BirthDate,
-                Responsible = c.Responsible,
-                MomName = c.MomName,
-                DadName = c.DadName,
-                Cpf = c.Cpf
-                
-            };
-
         public async Task<ChildDto> UpdateChildAsync(Guid id, UpdateChildDto dto)
         {
             var existingChild = await _childRepository.GetByIdAsync(id);
@@ -141,7 +128,7 @@ namespace Sofis.Api.Application.Services
             existingChild.MomName = dto.MomName;
             existingChild.Responsible = dto.Responsible;
             await _childRepository.UpdateAsync(existingChild);
-            
+            return MapToDto(existingChild);
         }
 
         public async Task DeleteChildAsync(Guid id)
