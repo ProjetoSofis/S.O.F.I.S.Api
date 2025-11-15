@@ -24,8 +24,7 @@ namespace Sofis.Api.Domain.Entities
         public Status Status { get; set; }
         public List<Family> FamilyMembers { get; private set; } = new();
 
-        public readonly List<Report> _annotations = new();
-        public IReadOnlyCollection<Report> Annotations => _annotations.AsReadOnly();
+        public ICollection<Report> Reports { get; private set; } = new List<Report>();
 
         public Child() { }
 
