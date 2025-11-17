@@ -10,9 +10,14 @@ namespace Sofis.Api.Application.Services
     public class FamilyService : IFamilyService
     {
         private readonly IFamilyRepository _familyRepository;
-        public FamilyService(IFamilyRepository familyRepository)
+        private readonly IChildRepository _childRepository;
+
+        public FamilyService(
+            IFamilyRepository familyRepository,
+            IChildRepository childRepository)
         {
             _familyRepository = familyRepository;
+            _childRepository = childRepository;
         }
 
         public async Task DeleteFamilyAsync(Guid id)
@@ -33,21 +38,19 @@ namespace Sofis.Api.Application.Services
 
         public async Task<FamilyDto?> GetByCpf(string cpf)
         {
-            var Family = await _familyRepository.GetByCpfAsync(cpf);
-            if (Family == null)
-            {
+            var family = await _familyRepository.GetByCpfAsync(cpf);
+            if (family == null)
                 throw new Exception("Familiar não encontrado");
-            }
-            return MapToDto(Family);
+
+            return MapToDto(family);
         }
 
         public async Task<FamilyDto?> GetByIdAsync(Guid id)
         {
             var family = await _familyRepository.GetByIdAsync(id);
             if (family == null)
-            {
                 throw new Exception("Familiar não encontrado");
-            }
+
             return MapToDto(family);
         }
 
@@ -55,9 +58,12 @@ namespace Sofis.Api.Application.Services
         {
             var existingFamily = await _familyRepository.GetByCpfAsync(dto.Cpf);
             if (existingFamily != null)
-            {
                 throw new Exception("Já existe um familiar cadastrado com esse CPF.");
-            };
+
+            var child = await _childRepository.GetByIdAsync(dto.ChildId);
+            if (child == null)
+                throw new Exception($"Criança com ID {dto.ChildId} não encontrada.");
+
             var family = new Family
             {
                 Name = dto.Name,
@@ -65,9 +71,12 @@ namespace Sofis.Api.Application.Services
                 Cpf = dto.Cpf,
                 Address = dto.Address,
                 Phone = dto.Phone,
-                Email = dto.Email
+                Email = dto.Email,
+                ChildId = dto.ChildId
             };
+
             await _familyRepository.AddFamilyAsync(family);
+
             return MapToDto(family);
         }
 
@@ -75,29 +84,30 @@ namespace Sofis.Api.Application.Services
         {
             var existingFamily = await _familyRepository.GetByIdAsync(dto.Id);
             if (existingFamily == null)
-            {
                 throw new Exception("Familiar não encontrado.");
-            }
+
             existingFamily.Name = dto.Name;
             existingFamily.Cpf = dto.Cpf;
             existingFamily.Kinship = dto.Kinship;
             existingFamily.Address = dto.Address;
             existingFamily.Phone = dto.Phone;
             existingFamily.Email = dto.Email;
+
             await _familyRepository.UpdateFamilyAsync(existingFamily);
             return MapToDto(existingFamily);
         }
+
         private FamilyDto MapToDto(Family f) =>
-        new FamilyDto
-        {
-            Id = f.Id,
-            Name = f.Name,
-            Cpf = f.Cpf,
-            Kinship = f.Kinship,
-            Address = f.Address,
-            Phone = f.Phone,
-            Email = f.Email
-        };
+            new FamilyDto
+            {
+                Id = f.Id,
+                Name = f.Name,
+                Cpf = f.Cpf,
+                Kinship = f.Kinship,
+                Address = f.Address,
+                Phone = f.Phone,
+                Email = f.Email,
+                ChildId = f.ChildId
+            };
     }
-    
 }

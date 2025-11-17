@@ -8,14 +8,15 @@ namespace Sofis.Api.Controllers
     [Route("api/v1/[controller]")]
     public class FamilyController : ControllerBase
     {
-        // Vinicius: Implement the FamilyController methods here
         private readonly IFamilyService _familyService;
         private readonly ILogger<FamilyController> _logger;
+
         public FamilyController(IFamilyService familyService, ILogger<FamilyController> logger)
         {
             this._familyService = familyService;
             this._logger = logger;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAllFamilies()
         {
@@ -34,6 +35,7 @@ namespace Sofis.Api.Controllers
                 });
             }
         }
+
         [HttpGet]
         [Route("cpf/{cpf}")]
         public async Task<IActionResult> GetFamilyByCpf(string cpf)
@@ -57,6 +59,7 @@ namespace Sofis.Api.Controllers
                 });
             }
         }
+
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetFamilyById(Guid id)
@@ -80,17 +83,18 @@ namespace Sofis.Api.Controllers
                 });
             }
         }
+
         [HttpPost]
-        public async Task<IActionResult> RegisterFamily([FromBody] CreateFamilyDto dto)
+        public async Task<IActionResult> Create([FromBody] CreateFamilyDto dto)
         {
             try
             {
-                var family = await _familyService.RegisterFamilyAsync(dto);
-                return CreatedAtAction(nameof(GetFamilyById), new { id = family.Id }, family);
+                var result = await _familyService.RegisterFamilyAsync(dto);
+                return Ok(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error registering family.");
+                _logger.LogError(ex, "Error creating family member.");
                 return StatusCode(500, new
                 {
                     error = "Internal server error.",
@@ -98,6 +102,7 @@ namespace Sofis.Api.Controllers
                 });
             }
         }
+
         [HttpPut]
         public async Task<IActionResult> UpdateFamily([FromBody] UpdateFamilyDto dto)
         {
@@ -116,6 +121,7 @@ namespace Sofis.Api.Controllers
                 });
             }
         }
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> DeleteFamily(Guid id)
