@@ -3,6 +3,7 @@
     public class FamilyDto
     {
         public Guid Id { get; set; }
+        public Guid ChildId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Kinship { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;

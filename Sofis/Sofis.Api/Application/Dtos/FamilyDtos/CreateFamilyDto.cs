@@ -1,4 +1,6 @@
-﻿namespace Sofis.Api.Application.Dtos.FamilyDtos
+﻿using System.Runtime.InteropServices;
+
+namespace Sofis.Api.Application.Dtos.FamilyDtos
 {
     public class CreateFamilyDto
     {
@@ -8,5 +10,7 @@
         public string Cpf { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
+
+        public Guid ChildId { get; set; }
     }
 }
