@@ -16,7 +16,7 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
         public async Task<Child?> GetByIdAsync(Guid id)
         {
             return await _context.Child
-                .Include(c => c.Reports)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
         public async Task<IEnumerable<Child>> GetAllAsync()
@@ -47,6 +47,18 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
         {
             return await _context.Child
                 .FirstOrDefaultAsync(c => c.Cpf == cpf);
+        }
+        public async Task<IEnumerable<Child>> GetFamilyMembersByChildIdAsync(Guid childId)
+        {
+            var childWithFamily = await _context.Child
+                .Include(c => c.Family)
+                .ThenInclude(f => f.RelationedChildren)
+                .FirstOrDefaultAsync(c => c.Id == childId);
+            if (childWithFamily == null || childWithFamily.Family == null)
+            {
+                return Enumerable.Empty<Child>();
+            }
+            return childWithFamily.Family.RelationedChildren;
         }
 
         public async Task<IEnumerable<Child>> GetByNameAsync(string name)
