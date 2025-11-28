@@ -43,13 +43,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<SofisDbContext>(options =>
-    options.UseNpgsql(connectionString,
-    npgsqlOptions => npgsqlOptions.EnableRetryOnFailure(
-        maxRetryCount: 10,
-        maxRetryDelay: TimeSpan.FromSeconds(15),
-        errorCodesToAdd: null
-    )));
+
 
 var app = builder.Build();
 
