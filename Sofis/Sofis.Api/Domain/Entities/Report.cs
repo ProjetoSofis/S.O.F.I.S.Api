@@ -2,14 +2,14 @@
 {
     public class Report : BaseEntity
     {
-        public Guid EmployeeId { get; private set; }
-        public string Title { get; private set; }
-        public string Description { get; private set; }
-        public Employee Employee { get; private set; }
-        public Guid ChildId { get; private set; }
-        public Child Child { get; private set; }
+        public Guid EmployeeId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public Employee Employee { get; set; }
+        public Guid ChildId { get; set; }
+        public Child Child { get; set; }
 
-        private Report() { }
+        public Report() { }
 
         public Report(Guid employeeId, string description, Guid childId)
         {
