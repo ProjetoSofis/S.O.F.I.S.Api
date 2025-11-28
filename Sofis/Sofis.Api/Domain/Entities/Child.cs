@@ -18,11 +18,16 @@ namespace Sofis.Api.Domain.Entities
         [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true)]
         public DateOnly BirthDate { get; set; }
         public string Responsible { get; set; }
-
+        public string CodigoEol { get; set; }
+        public string Endereco { get; set; }
+        public string UnidadeEscolar { get; set; }
+        public string AnoEscolar { get; set; }
         public string MomName { get; set; }
         public string DadName { get; set; }
         public Status Status { get; set; }
-        public List<Family> FamilyMembers { get; private set; } = new();
+        //public List<Family> FamilyMembers { get; private set; } = new();
+        public Guid? FamilyId { get; set; }
+        public Family Family { get; set; }
 
         public ICollection<Report> Reports { get; private set; } = new List<Report>();
 
@@ -45,9 +50,9 @@ namespace Sofis.Api.Domain.Entities
         //    _annotations.Add(new Report(employeeId, date, text));
         //}
 
-        public void AddFamilyMember(Family familyMember)
-        {
-            FamilyMembers.Add(familyMember);
-        }
+        //public void AddFamilyMember(Family familyMember)
+        //{
+        //    FamilyMembers.Add(familyMember);
+        //}
     }
 }
