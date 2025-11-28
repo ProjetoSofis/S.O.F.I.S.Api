@@ -25,7 +25,7 @@ namespace Sofis.Api.Application.Services
             var children = await _childRepository.GetAllAsync();
             return children.Select(MapToDto);
         }
-
+        
         public async Task<ChildDto?> GetByIdAsync(Guid id)
         {
             var child = await _childRepository.GetByIdAsync(id);
@@ -62,6 +62,10 @@ namespace Sofis.Api.Application.Services
                 Cpf = dto.Cpf,
                 BirthDate = dto.BirthDate,
                 Responsible = dto.Responsible.Trim(),
+                CodigoEol = dto.CodigoEol,
+                Endereco = dto.Endereco,
+                UnidadeEscolar = dto.UnidadeEscolar,
+                AnoEscolar = dto.AnoEscolar,
                 MomName = dto.MomName,
                 DadName = dto.DadName
             };
@@ -70,8 +74,13 @@ namespace Sofis.Api.Application.Services
             return MapToDto(child);
         }
 
-        public async Task<ChildDto> UpdateChildAsync(UpdateChildDto dto)
+        public async Task<ChildDto> UpdateChildAsync(Guid id, UpdateChildDto dto)
         {
+            var existingChild = await _childRepository.GetByIdAsync(id);
+            if (existingChild == null)
+            {
+                throw new Exception("Criança não encontrada");
+            }
             if (string.IsNullOrWhiteSpace(dto.Name))
             {
                 throw new ValidationException("Nome é obrigatório");
@@ -90,6 +99,10 @@ namespace Sofis.Api.Application.Services
                 Name = dto.Name.Trim(),
                 BirthDate = dto.BirthDate,
                 Responsible = dto.Responsible.Trim(),
+                CodigoEol = dto.CodigoEol,
+                Endereco = dto.Endereco,
+                UnidadeEscolar = dto.UnidadeEscolar,
+                AnoEscolar = dto.AnoEscolar,
                 MomName = dto.MomName,
                 DadName = dto.DadName,
                 Cpf = dto.Cpf
@@ -114,22 +127,22 @@ namespace Sofis.Api.Application.Services
             return childs.Select(MapToDto);
         }
 
-        public async Task<ChildDto> UpdateChildAsync(Guid id, UpdateChildDto dto)
-        {
-            var existingChild = await _childRepository.GetByIdAsync(id);
-            if (existingChild == null)
-            {
-                throw new Exception("Criança não encontrada");
-            }
-            existingChild.Name = dto.Name;
-            existingChild.Cpf = dto.Cpf;
-            existingChild.BirthDate = dto.BirthDate;
-            existingChild.DadName = dto.DadName;
-            existingChild.MomName = dto.MomName;
-            existingChild.Responsible = dto.Responsible;
-            await _childRepository.UpdateAsync(existingChild);
-            return MapToDto(existingChild);
-        }
+        //public async Task<ChildDto> UpdateChildAsync(Guid id, UpdateChildDto dto)
+        //{
+        //    var existingChild = await _childRepository.GetByIdAsync(id);
+        //    if (existingChild == null)
+        //    {
+        //        throw new Exception("Criança não encontrada");
+        //    }
+        //    existingChild.Name = dto.Name;
+        //    existingChild.Cpf = dto.Cpf;
+        //    existingChild.BirthDate = dto.BirthDate;
+        //    existingChild.DadName = dto.DadName;
+        //    existingChild.MomName = dto.MomName;
+        //    existingChild.Responsible = dto.Responsible;
+        //    await _childRepository.UpdateAsync(existingChild);
+        //    return MapToDto(existingChild);
+        //}
 
         public async Task DeleteChildAsync(Guid id)
         {
@@ -151,5 +164,20 @@ namespace Sofis.Api.Application.Services
                 DadName = c.DadName,
                 Responsible = c.Responsible,
             };
+
+        public Task<IEnumerable<ChildDto>> GetFamilyMembersByChildIdAsync(Guid childId, Guid familyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task AssignFamilyToChildAsync(Guid childId, Guid familyId)
+        {
+            var child = await _childRepository.GetByIdAsync(childId);
+            if (child == null)
+            {
+                throw new ValidationException("criança não encontrada");
+            }
+            
+        }
     }
 }
