@@ -9,6 +9,8 @@ namespace Sofis.Api.Application.Contracts
         Task<IEnumerable<ChildDto>> GetAllAsync();
         Task<ChildDto?> GetByIdAsync(Guid id);
         Task<ChildDto?> GetByCpfASync(string cpf);
+        Task<IEnumerable<ChildDto>> GetFamilyMembersByChildIdAsync(Guid childId, Guid familyId);
+        Task AssignFamilyToChildAsync(Guid childId, Guid familyId);
         Task<IEnumerable<ChildDto>> GetByNameAsync(string name);
         Task<ChildDto> UpdateChildAsync(Guid id, UpdateChildDto dto);
         Task DeleteChildAsync(Guid id);
