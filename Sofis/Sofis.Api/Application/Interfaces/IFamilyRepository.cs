@@ -9,6 +9,7 @@ namespace Sofis.Api.Application.Interfaces
         Task<Family> AddAsync(Family family);
         Task UpdateFamilyAsync(Family family);
         Task DeleteFamilyAsync(Guid id);
+        Task<Family?> GetFamilyDetailsAsync(Guid id);
 
     }
 }
