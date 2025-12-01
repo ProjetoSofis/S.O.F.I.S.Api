@@ -9,5 +9,6 @@ namespace Sofis.Api.Application.Interfaces
         Task<ICollection<Guardian>> GetAllAsync();
         Task UpdateAsync(Guardian guardian);
         Task DeleteAsync(Guid id);
+        Task<Guardian?> GetByCpfAsync(string cpf);
     }
 }
