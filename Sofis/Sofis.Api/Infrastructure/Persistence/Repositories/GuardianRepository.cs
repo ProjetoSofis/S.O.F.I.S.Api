@@ -19,7 +19,7 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
         }
         public async Task DeleteAsync(Guid id)
         {
-            var guardian = await GetByIdAsync(id);
+            var guardian = await _context.Guardians.FindAsync(id);
             if (guardian != null)
             {
                 _context.Guardians.Remove(guardian);
@@ -27,16 +27,23 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
             }
         }
 
-        public async Task<Guardian?> GetByCpfAsync(string cpf)
+        public async Task<ICollection<Guardian>> GetAllAsync()
         {
             return await _context.Guardians
-                .AsNoTracking()
-                .FirstOrDefaultAsync(g => g.Cpf == cpf);
+                .Include(g => g.Family)
+                .ToListAsync();
         }
 
-        public Task<Guardian?> GetByIdAsync(Guid id)
+        public async Task<Guardian?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Guardians
+                .Include(g => g.Family)
+                .FirstOrDefaultAsync(g => g.Id == id);
+        }
+        public async Task UpdateAsync(Guardian guardian)
+        {
+            _context.Guardians.Update(guardian);
+            await _context.SaveChangesAsync();
         }
     }
 }
