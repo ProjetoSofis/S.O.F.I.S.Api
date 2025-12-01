@@ -7,6 +7,7 @@ using Sofis.Api.Application.Services;
 using Sofis.Api.Infrastructure;
 using Sofis.Api.Infrastructure.Persistence.Repositories;
 using Sofis.Api.Middlewares;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 //builder.WebHost.ConfigureKestrel(options =>
@@ -16,6 +17,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+                               ForwardedHeaders.XForwardedProto;
+    options.KnownNetworks.Clear(); // Confia em qualquer proxy (necessário na Render)
+    options.KnownProxies.Clear();
+});
 
 // Add services to the container.
 //builder.Services.AddScoped<IChildRepository, ChildRepository>();
@@ -46,7 +54,7 @@ builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
-
+app.UseForwardedHeaders();
 app.UseCors("AllowAll");
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
@@ -55,7 +63,7 @@ app.UseCors("AllowAll");
     app.UseSwaggerUI();
 //}
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
