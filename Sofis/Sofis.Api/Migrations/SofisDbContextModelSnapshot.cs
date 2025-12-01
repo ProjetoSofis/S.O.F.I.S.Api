@@ -22,29 +22,22 @@ namespace Sofis.Api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ChildFamily", b =>
-                {
-                    b.Property<Guid>("FamilyMembersId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("RelationedChildrenId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("FamilyMembersId", "RelationedChildrenId");
-
-                    b.HasIndex("RelationedChildrenId");
-
-                    b.ToTable("ChildFamily");
-                });
-
             modelBuilder.Entity("Sofis.Api.Domain.Entities.Child", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("AnoEscolar")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateOnly>("BirthDate")
                         .HasColumnType("date");
+
+                    b.Property<string>("CodigoEol")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Cpf")
                         .IsRequired()
@@ -56,6 +49,13 @@ namespace Sofis.Api.Migrations
                     b.Property<string>("DadName")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("Endereco")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("FamilyId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("MomName")
                         .IsRequired()
@@ -72,10 +72,16 @@ namespace Sofis.Api.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
+                    b.Property<string>("UnidadeEscolar")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FamilyId");
 
                     b.ToTable("Child");
                 });
@@ -142,6 +148,27 @@ namespace Sofis.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("SurName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Family");
+                });
+
+            modelBuilder.Entity("Sofis.Api.Domain.Entities.Guardian", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("text");
@@ -156,6 +183,9 @@ namespace Sofis.Api.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<Guid>("FamilyId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Kinship")
                         .IsRequired()
@@ -174,7 +204,9 @@ namespace Sofis.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Family");
+                    b.HasIndex("FamilyId");
+
+                    b.ToTable("Guardians");
                 });
 
             modelBuilder.Entity("Sofis.Api.Domain.Entities.Report", b =>
@@ -207,22 +239,29 @@ namespace Sofis.Api.Migrations
 
                     b.HasIndex("ChildId");
 
+                    b.HasIndex("EmployeeId");
+
                     b.ToTable("Reports");
                 });
 
-            modelBuilder.Entity("ChildFamily", b =>
+            modelBuilder.Entity("Sofis.Api.Domain.Entities.Child", b =>
                 {
-                    b.HasOne("Sofis.Api.Domain.Entities.Family", null)
-                        .WithMany()
-                        .HasForeignKey("FamilyMembersId")
+                    b.HasOne("Sofis.Api.Domain.Entities.Family", "Family")
+                        .WithMany("RelationedChildren")
+                        .HasForeignKey("FamilyId");
+
+                    b.Navigation("Family");
+                });
+
+            modelBuilder.Entity("Sofis.Api.Domain.Entities.Guardian", b =>
+                {
+                    b.HasOne("Sofis.Api.Domain.Entities.Family", "Family")
+                        .WithMany("Guardians")
+                        .HasForeignKey("FamilyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Sofis.Api.Domain.Entities.Child", null)
-                        .WithMany()
-                        .HasForeignKey("RelationedChildrenId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Family");
                 });
 
             modelBuilder.Entity("Sofis.Api.Domain.Entities.Report", b =>
@@ -233,12 +272,27 @@ namespace Sofis.Api.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Sofis.Api.Domain.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Child");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("Sofis.Api.Domain.Entities.Child", b =>
                 {
                     b.Navigation("Reports");
+                });
+
+            modelBuilder.Entity("Sofis.Api.Domain.Entities.Family", b =>
+                {
+                    b.Navigation("Guardians");
+
+                    b.Navigation("RelationedChildren");
                 });
 #pragma warning restore 612, 618
         }
