@@ -2,17 +2,19 @@
 {
     public class Family : BaseEntity
     {
-        public string SurName { get; set; } 
+        public string Name { get; set; }
+        public string Address { get; set; }
 
-       public ICollection<Child> RelationedChildren { get; set; }
-       public ICollection<Guardian> Guardians { get; set; }
+
+        public ICollection<Child> RelationedChildren { get; set; } = new List<Child>();
+       public ICollection<Guardian> Guardians { get; set; } = new List<Guardian>();
 
         public Family() { }
 
-        public Family(string surName)
+        public Family(string name)
         {
             Id = Guid.NewGuid();
-            SurName = surName;
+            Name = name;
             //Name = name;
             //Kinship = kinship;
             //Phone = phone;
