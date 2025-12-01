@@ -11,46 +11,49 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
         {
             _context = context;
         }
-        public async Task AddFamilyAsync(Family family)
+        public async Task<Family> AddAsync(Family family)
         {
-            await _context.Family.AddAsync(family);
+            _context.Family.AddAsync(family);
             await _context.SaveChangesAsync();
+            return family;
         }
 
         public async Task DeleteFamilyAsync(Guid id)
         {
-            var familyExist = await GetByIdAsync(id);
-            if (familyExist != null)
+            var family = await _context.Family.FindAsync(id);
+            if (family != null)
             {
-                _context.Remove(familyExist);
+                _context.Remove(family);
                 await _context.SaveChangesAsync();
             }
         }
 
-        public async Task<IEnumerable<Family>> GetAllAsync()
+        public async Task<ICollection<Family>> GetAllAsync()
         {
-            return await _context.Family.ToListAsync();
-        }
-
-        public Task<Family?> GetByCpfAsync(string cpf)
-        {
-            throw new NotImplementedException();
+            return await _context.Family
+                .Include(f => f.Guardians)
+                .Include(f => f.RelationedChildren)
+                .ToListAsync();
         }
 
         public async Task<Family?> GetByIdAsync(Guid id)
         {
+            return await _context.Family.FindAsync(id);
+        }
+
+        public async Task<Family?> GetFamilyDetailsAsync(Guid id)
+        {
             return await _context.Family
+                .Include(f => f.Guardians)
+                .Include(f => f.RelationedChildren)
                 .FirstOrDefaultAsync(f => f.Id == id);
         }
 
+
         public async Task UpdateFamilyAsync(Family family)
         {
-            var familyExist = await GetByIdAsync(family.Id);
-            if (familyExist != null)
-            {
-                _context.Family.Update(family);
-                await _context.SaveChangesAsync();
-            }
+            _context.Family.Update(family);
+            await _context.SaveChangesAsync();
         }
     }
 }
