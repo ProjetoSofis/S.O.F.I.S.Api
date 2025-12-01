@@ -32,7 +32,7 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
             return await _context.Family.ToListAsync();
         }
 
-        public async Task<Family?> GetByCpfAsync(string cpf)
+        public Task<Family?> GetByCpfAsync(string cpf)
         {
             throw new NotImplementedException();
         }
