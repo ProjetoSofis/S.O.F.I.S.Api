@@ -2,26 +2,29 @@
 {
     public class Family : BaseEntity
     {
-        public string Name { get; set; }
-        public string Kinship { get; set; }
-        public string Phone { get; set; }
-        public string Cpf { get; set; }
-        public string Email { get; set; }
-        public string Address { get; set; }
+        public string SurName { get; set; }
 
-        public List<Child> RelationedChildren { get; set; } = new();
+        //public string Kinship { get; set; }
+        //public string Phone { get; set; }
+        //public string Cpf { get; set; }
+        //public string Email { get; set; }
+        //public string Address { get; set; }
+
+       public ICollection<Child> RelationedChildren { get; set; }
+       public ICollection<Guardian> Guardians { get; set; }
 
         public Family() { }
 
-        public Family(string name, string kinship, string phone, string cpf,string email, string address)
+        public Family(string surName)
         {
             Id = Guid.NewGuid();
-            Name = name;
-            Kinship = kinship;
-            Phone = phone;
-            Cpf = cpf;
-            Email = email;
-            Address = address;
+            SurName = surName;
+            //Name = name;
+            //Kinship = kinship;
+            //Phone = phone;
+            //Cpf = cpf;
+            //Email = email;
+            //Address = address;
             CreatedAt = DateTime.UtcNow;
         }
     }
