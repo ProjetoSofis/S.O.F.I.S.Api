@@ -34,8 +34,7 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
 
         public async Task<Family?> GetByCpfAsync(string cpf)
         {
-            return await _context.Family
-                .FirstOrDefaultAsync(f => f.Cpf == cpf);
+            throw new NotImplementedException();
         }
 
         public async Task<Family?> GetByIdAsync(Guid id)
