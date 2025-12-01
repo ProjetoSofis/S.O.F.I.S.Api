@@ -6,7 +6,7 @@
         public string Address { get; set; }
 
 
-        public ICollection<Child> RelationedChildren { get; set; } = new List<Child>();
+       public ICollection<Child> RelationedChildren { get; set; } = new List<Child>();
        public ICollection<Guardian> Guardians { get; set; } = new List<Guardian>();
 
         public Family() { }
@@ -15,19 +15,7 @@
         {
             Id = Guid.NewGuid();
             Name = name;
-            //Name = name;
-            //Kinship = kinship;
-            //Phone = phone;
-            //Cpf = cpf;
-            //Email = email;
-            //Address = address;
             CreatedAt = DateTime.UtcNow;
         }
-
-        //public static implicit operator string(Family f)
-        //{
-        //    return f.Name;
-        //}
-
     }
 }
