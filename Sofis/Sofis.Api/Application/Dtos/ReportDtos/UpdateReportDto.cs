@@ -2,8 +2,8 @@
 {
     public class UpdateReportDto
     {
-        public Guid Id { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public string Content { get; set; } = string.Empty;
+        public Guid id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
     }
 }

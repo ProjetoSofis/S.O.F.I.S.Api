@@ -4,6 +4,7 @@ namespace Sofis.Api.Application.Dtos.ReportDtos
 {
     public class ReportDto
     {
+        public Guid Id { get; set; }
         public Guid EmployeeId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
