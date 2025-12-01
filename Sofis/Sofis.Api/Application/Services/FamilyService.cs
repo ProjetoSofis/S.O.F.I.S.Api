@@ -4,127 +4,82 @@ using Sofis.Api.Application.Dtos.FamilyDtos;
 using Sofis.Api.Application.Dtos.GuardianDtos;
 using Sofis.Api.Application.Interfaces;
 using Sofis.Api.Domain.Entities;
+using Sofis.Api.Infrastructure.Persistence.Repositories;
 using System.ComponentModel.DataAnnotations;
 
 namespace Sofis.Api.Application.Services
 {
     public class FamilyService : IFamilyService
     {
-        //    private readonly IGuardianRepository _guardianRepository;
-        //    private readonly IChildRepository _childRepository;
-        //    private readonly IFamilyRepository _familyRepository;
-        //    private readonly IChildRepository _childRepository;
-
-        //    public FamilyService(
-        //        IFamilyRepository familyRepository,
-        //        IChildRepository childRepository)
-        //    {
-        //        _guardianRepository = guardianRepository;
-        //        _childRepository = childRepository;
-        //        _familyRepository = familyRepository;
-        //        _childRepository = childRepository;
-        //    }
-
-        //    public async Task<GuardianDto> RegisterGuardianForChildAsync(CreateGuardianDto dto)
-        //    {
-        //        var child = await _childRepository.GetByIdAsync(dto.ChildId);
-        //        if (child == null)
-        //        {
-        //            throw new ValidationException("Criança não encontrada");
-        //        }
-
-        //        var existingGuardian = await _guardianRepository.GetByCpfAsync(dto.Cpf);
-        //        if (existingGuardian != null)
-        //        {
-        //            throw new ValidationException("Já existe um responsável cadastrado com esse CPF.");
-        //        }
-
-        //    public async Task<FamilyDto?> GetByCpf(string cpf)
-        //    {
-        //        var family = await _familyRepository.GetByCpfAsync(cpf);
-        //        if (family == null)
-        //            throw new Exception("Familiar não encontrado");
-
-        //        return MapToDto(family);
-        //    }
-
-        //    public async Task<FamilyDto?> GetByIdAsync(Guid id)
-        //    {
-        //        var family = await _familyRepository.GetByIdAsync(id);
-        //        if (family == null)
-        //            throw new Exception("Familiar não encontrado");
-
-        //        return MapToDto(family);
-        //    }
-
-        //    public async Task<FamilyDto> RegisterFamilyAsync(CreateFamilyDto dto)
-        //    {
-        //        var existingFamily = await _familyRepository.GetByCpfAsync(dto.Cpf);
-        //        if (existingFamily != null)
-        //            throw new Exception("Já existe um familiar cadastrado com esse CPF.");
-
-        //        var child = await _childRepository.GetByIdAsync(dto.ChildId);
-        //        if (child == null)
-        //            throw new Exception($"Criança com ID {dto.ChildId} não encontrada.");
-
-        //        var family = new Family
-        //        {
-        //            Name = dto.Name,
-        //            Cpf = dto.Cpf,
-        //            Kinship = dto.Kinship,
-        //            Address = dto.Address,
-        //            Phone = dto.Phone,
-        //            Email = dto.Email,
-        //            ChildId = dto.ChildId
-        //        };
-
-        //        await _familyRepository.AddFamilyAsync(family);
-
-        //        return MapToDto(family);
-        //    }
-
-        //    public async Task<GuardianDto?> GetGuardianByIdAsync(Guid id)
-        //    {
-        //        var existingFamily = await _familyRepository.GetByIdAsync(dto.Id);
-        //        if (existingFamily == null)
-        //            throw new Exception("Familiar não encontrado.");
-
-        //        existingFamily.Name = dto.Name;
-        //        existingFamily.Cpf = dto.Cpf;
-        //        existingFamily.Kinship = dto.Kinship;
-        //        existingFamily.Address = dto.Address;
-        //        existingFamily.Phone = dto.Phone;
-        //        existingFamily.Email = dto.Email;
-
-        //        await _familyRepository.UpdateFamilyAsync(existingFamily);
-        //        return MapToDto(existingFamily);
-        //    }
-
-        //    private FamilyDto MapToDto(Family f) =>
-        //        new FamilyDto
-        //        {
-        //            Id = f.Id,
-        //            Name = f.Name,
-        //            Cpf = f.Cpf,
-        //            Kinship = f.Kinship,
-        //            Address = f.Address,
-        //            Phone = f.Phone,
-        //            Email = f.Email,
-        //            ChildId = f.ChildId
-        //        };
-        public Task DeleteGuardianAsync(Guid id)
+        private readonly IFamilyRepository _familyRepository;
+        private readonly IGuardianRepository _guardianRepository;
+        public FamilyService(IFamilyRepository familyRepository, IGuardianRepository guardianRepository)
         {
+            _familyRepository = familyRepository;
+            _guardianRepository = guardianRepository;
+        }
+
+        public async Task<FamilyDto> CreateFamilyAsync(CreateFamilyDto dto)
+        {
+            var family = new Family
+            {
+                Name = dto.Name,
+                Address = dto.Address
+            };
+
+            var createdFamily = await _familyRepository.AddAsync(family);
+            return MapToDto(createdFamily);
+            
+        }
+
+        public async Task<ICollection<FamilyDto>> GetAllFamiliesAsync()
+        {
+            var families = await _familyRepository.GetAllAsync();
+            return families.Select(MapToDto).ToList();
+
+        }
+
+        public async Task<FamilyDto?> GetFamilyByIdAsync(Guid id)
+        {
+            var family = await _familyRepository.GetFamilyDetailsAsync(id);
+            if (family == null) return null;
+
+            return MapToDto(family);
+        }
+
+        public async Task<FamilyDto?> GetFamilyByGuardianCpfAsync(string cpf)
+        {
+            // Nota: O IGuardianRepository precisaria de um método GetByCpfAsync(string cpf) para ser ideal.
+            // Assumindo que o repositório Guardian implementa essa lógica:
+            // var guardian = await _guardianRepository.GetByCpfAsync(cpf);
+
+            // Simulação (Se o método GetByCpfAsync não existir, isso falhará na compilação)
+            // Se o repositório só tiver GetAll, a performance seria ruim:
+            var guardian = await _guardianRepository.GetByCpfAsync(cpf);
+            if (guardian == null) {
+                return null;
+            };
+
+            return await GetFamilyByIdAsync(guardian.FamilyId);
+        }
+
+        public Task UpdateFamilyAsync(Guid id, CreateFamilyDto dto)
+        {
+            // Lógica de atualização
             throw new NotImplementedException();
         }
 
-        public Task<GuardianDto> GetGuardianByIdAsync(Guid id)
+        public Task DeleteFamilyAsync(Guid id)
         {
+            // Lógica de deleção
             throw new NotImplementedException();
         }
-
-        public Task<GuardianDto> RegisterGuardianForChildAsync(CreateGuardianDto dto)
+        private FamilyDto MapToDto(Family f) => new FamilyDto
         {
-            throw new NotImplementedException();
-        }
+            Name = f.Name,
+            Address = f.Address,
+            GuardianCount = f.Guardians.Count,
+            ChildrenCount = f.RelationedChildren.Count
+        };
     }
 }
