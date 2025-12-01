@@ -9,6 +9,7 @@ public class SofisDbContext : DbContext
     public DbSet<Family> Family { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Report> Reports { get; set; }
+    public DbSet<Guardian> Guardians { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -16,7 +17,6 @@ public class SofisDbContext : DbContext
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<Child>(entity =>
         {
-            // Configura a relação "Um-para-Muitos"
             entity.HasMany(c => c.Reports)
                   .WithOne(r => r.Child)
                   .HasForeignKey(r => r.ChildId)
