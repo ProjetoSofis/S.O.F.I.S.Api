@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sofis.Api", "Sofis.Api\Sofis.Api.csproj", "{A924A88B-A17B-4DF1-8A9B-2C334BF7577B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sofis.Api", "Sofis.Api\Sofis.Api.csproj", "{A924A88B-A17B-4DF1-8A9B-2C334BF7577B}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{664EAB8C-E2AD-4AD0-91FE-50B975EB8744}"
 EndProject
@@ -24,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {45772319-791F-4A35-B270-7430D05B89F8}
 	EndGlobalSection
 EndGlobal

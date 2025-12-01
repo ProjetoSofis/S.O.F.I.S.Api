@@ -1,24 +1,23 @@
 ﻿namespace Sofis.Api.Domain.Entities
 {
-    public class Report
+    public class Report : BaseEntity
     {
-        public Guid Id { get; private set; }
-        public Guid EmployeeId { get; private set; }
-        public DateTime Period { get; private set; }
+        public Guid EmployeeId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public Employee Employee { get; set; }
+        public Guid ChildId { get; set; }
+        public Child Child { get; set; }
 
-        private readonly List<Registry> _registrys = new();
-        private IReadOnlyCollection<Registry> registrys => _registrys.AsReadOnly();
-        private Report() { }
+        public Report() { }
 
-        public Report(Guid employeeId, DateTime period)
+        public Report(Guid employeeId, string description, Guid childId)
         {
             Id = Guid.NewGuid();
             EmployeeId = employeeId;
-            Period = period;
-        }
-        public void Addregistry(Registry registry)
-        {
-            _registrys.Add(registry);
+            ChildId = childId;
+            CreatedAt = DateTime.UtcNow;
+            Description = description;
         }
     }
 }

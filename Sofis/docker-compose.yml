@@ -1,6 +1,39 @@
+version: '3.8'
+
 services:
-  sofis.api:
-    image: ${DOCKER_REGISTRY-}sofisapi
+  # --- API ---
+  sofis_api:
     build:
       context: .
       dockerfile: Sofis.Api/Dockerfile
+    container_name: sofis_api
+    command: ["/bin/sh", "-c", "sleep 15; exec dotnet Sofis.Api.dll"]
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:8081;http://+:8080
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=sofis2731161627
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ConnectionStrings__DefaultConnection=Host=postgres_db;Port=5432;Database=sofis_db;Username=sofis;Password=sofis_password
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+    depends_on:
+      - postgres_db
+    volumes:
+      - ./https:/https:ro
+
+  # ---BANCO DE DADOS---
+  postgres_db:
+    image: postgres:16
+    container_name: sofis_postgres
+    environment:
+      - POSTGRES_DB=sofis_db
+      - POSTGRES_USER=sofis
+      - POSTGRES_PASSWORD=sofis_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

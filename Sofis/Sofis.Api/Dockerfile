@@ -16,6 +16,9 @@ COPY ["Sofis.Api/Sofis.Api.csproj", "Sofis.Api/"]
 RUN dotnet restore "./Sofis.Api/Sofis.Api.csproj"
 COPY . .
 WORKDIR "/src/Sofis.Api"
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 \
+    DOTNET_NOLOGO=1 \
+    DOTNET_CLI_UI_LANGUAGE=en
 RUN dotnet build "./Sofis.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
