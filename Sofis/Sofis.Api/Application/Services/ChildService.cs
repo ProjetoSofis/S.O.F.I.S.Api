@@ -163,6 +163,11 @@ namespace Sofis.Api.Application.Services
                 MomName = c.MomName,
                 DadName = c.DadName,
                 Responsible = c.Responsible,
+                BirthDate = c.BirthDate,
+                CodigoEol = c.CodigoEol,
+                Endereco = c.Endereco,
+                UnidadeEscolar = c.UnidadeEscolar,
+                AnoEscolar = c.AnoEscolar
             };
 
         public Task<IEnumerable<ChildDto>> GetFamilyMembersByChildIdAsync(Guid childId, Guid familyId)
