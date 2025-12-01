@@ -21,6 +21,7 @@ namespace Sofis.Api.Application.Services
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = body };
 
             using var smtp = new SmtpClient();
+            smtp.Timeout = 30000;
 
             await smtp.ConnectAsync(
                 _configuration["Smtp:Host"],
