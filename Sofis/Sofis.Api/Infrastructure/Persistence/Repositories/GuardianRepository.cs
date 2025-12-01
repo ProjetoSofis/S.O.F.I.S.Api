@@ -34,6 +34,13 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
                 .ToListAsync();
         }
 
+        public Task<Guardian?> GetByCpfAsync(string cpf)
+        {
+            return _context.Guardians
+                .Include(g => g.Family)
+                .FirstOrDefaultAsync(g => g.Cpf == cpf);
+        }
+
         public async Task<Guardian?> GetByIdAsync(Guid id)
         {
             return await _context.Guardians
