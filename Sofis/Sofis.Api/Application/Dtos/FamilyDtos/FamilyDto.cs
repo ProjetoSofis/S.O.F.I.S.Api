@@ -1,14 +1,11 @@
 ﻿namespace Sofis.Api.Application.Dtos.FamilyDtos
 {
-    public class FamilyDto
+    public record FamilyDto
     {
         public Guid Id { get; set; }
-        public Guid ChildId { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string Kinship { get; set; } = string.Empty;
-        public string Phone { get; set; } = string.Empty;
-        public string Cpf { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
+        public int GuardianCount { get; set;}
+        public int ChildrenCount { get; set; }
     }
 }
