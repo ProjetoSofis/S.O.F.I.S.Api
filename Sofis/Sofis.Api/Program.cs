@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 //{
 //    options.ListenAnyIP(80);
 //});
-var connectionString = builder.Configuration.GetConnectionString("Default");
+
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
@@ -49,11 +49,11 @@ var app = builder.Build();
 
 app.UseCors("AllowAll");
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseHttpsRedirection();
 
