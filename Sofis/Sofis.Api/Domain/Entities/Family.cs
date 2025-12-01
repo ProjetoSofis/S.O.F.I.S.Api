@@ -22,10 +22,10 @@
             CreatedAt = DateTime.UtcNow;
         }
 
-        public static implicit operator string(Family f)
-        {
-            return f.Name;
-        }
+        //public static implicit operator string(Family f)
+        //{
+        //    return f.Name;
+        //}
 
     }
 }
