@@ -4,10 +4,9 @@ namespace Sofis.Api.Application.Interfaces
 {
     public interface IFamilyRepository
     {
-        Task<IEnumerable<Family>> GetAllAsync();
+        Task<ICollection<Family>> GetAllAsync();
         Task<Family?> GetByIdAsync(Guid id);
-        Task<Family?> GetByCpfAsync(string cpf);
-        Task AddFamilyAsync(Family family);
+        Task<Family> AddAsync(Family family);
         Task UpdateFamilyAsync(Family family);
         Task DeleteFamilyAsync(Guid id);
 
