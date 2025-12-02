@@ -72,7 +72,7 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
         {
             return await _context.Child
                 .Include(c => c.Family)
-                .ThenInclude(f => f.Guardians)
+                .Include(c => c.Guardians) 
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
     }
