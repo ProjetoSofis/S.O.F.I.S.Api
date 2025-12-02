@@ -28,10 +28,10 @@ namespace Sofis.Api.Application.Services
                 Kinship = dto.Kinship,
                 Phone = dto.Phone ?? string.Empty,
                 Email = dto.Email,
-                ChildId = dto.ChildId
             };
-            await _guardianRepository.AddAsync(guardian);
-            return MapToDto(guardian);
+            guardian.Children.Add(child);
+            var createdGuardian = await _guardianRepository.AddAsync(guardian);
+            return MapToDto(createdGuardian);
         }
 
         public async Task DeleteGuardianAsync(Guid id)
@@ -61,7 +61,6 @@ namespace Sofis.Api.Application.Services
             Kinship = g.Kinship,
             Phone = g.Phone,
             Email = g.Email,
-            ChildId = g.ChildId
         };
     }
 }

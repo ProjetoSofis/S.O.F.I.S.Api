@@ -31,7 +31,20 @@ namespace Sofis.Api.Application.Services
             return MapToDto(createdFamily);
             
         }
-
+        public async Task<FamilyDto>GetFamilyByGuardianCpfAsync(string cpf)
+        {
+            var guardian = await _guardianRepository.GetByCpfAsync(cpf);
+            if (guardian == null || !guardian.Children.Any())
+            {
+                return null;
+            }
+            var family = guardian.Children.FirstOrDefault()?.Family;
+            if (family == null)
+            {
+                return null;
+            }
+            return MapToDto(family);
+        }
         public async Task<ICollection<FamilyDto>> GetAllFamiliesAsync()
         {
             var families = await _familyRepository.GetAllAsync();
@@ -45,22 +58,6 @@ namespace Sofis.Api.Application.Services
             if (family == null) return null;
 
             return MapToDto(family);
-        }
-
-        public async Task<FamilyDto?> GetFamilyByGuardianCpfAsync(string cpf)
-        {
-            // Nota: O IGuardianRepository precisaria de um método GetByCpfAsync(string cpf) para ser ideal.
-            // Assumindo que o repositório Guardian implementa essa lógica:
-            // var guardian = await _guardianRepository.GetByCpfAsync(cpf);
-
-            // Simulação (Se o método GetByCpfAsync não existir, isso falhará na compilação)
-            // Se o repositório só tiver GetAll, a performance seria ruim:
-            var guardian = await _guardianRepository.GetByCpfAsync(cpf);
-            if (guardian == null) {
-                return null;
-            };
-
-            return await GetFamilyByIdAsync(guardian.FamilyId);
         }
 
         public Task UpdateFamilyAsync(Guid id, CreateFamilyDto dto)

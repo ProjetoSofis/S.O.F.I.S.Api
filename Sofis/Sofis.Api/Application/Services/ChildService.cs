@@ -36,50 +36,7 @@ namespace Sofis.Api.Application.Services
             {
                 return null;
             }
-            //var childDto = MapToDto(child);
-            //if (child.Family != null)
-            //{
-            //    childDto.FamilyName = child.Family.Name;
-            //    if (child.Family.Guardians != null)
-            //    {
-            //        childDto.Guardians = child.Family.Guardians.Select(g => new GuardianDto
-            //        {
-            //            Id = g.Id,
-            //            Name = g.Name,
-            //            Cpf = g.Cpf,
-            //            Kinship = g.Kinship,
-            //            Email = g.Email,
-            //            Phone = g.Phone,
-            //            FamilyId = g.FamilyId,
-            //            FamilyName = child.Family.Name
-            //        }).ToList();
-            //    }
-            //}
-            var childDto = new ChildDto
-            {
-                Id = child.Id,
-                Name = child.Name,
-                Cpf = child.Cpf,
-                BirthDate = child.BirthDate,
-                Responsible = child.Responsible,
-                CodigoEol = child.CodigoEol,
-                Endereco = child.Endereco,
-                UnidadeEscolar = child.UnidadeEscolar,
-                AnoEscolar = child.AnoEscolar,
-                MomName = child.MomName,
-                DadName = child.DadName,
-                Guardians = child.Family.Guardians.Select(g => new GuardianDto
-                {
-                    Id = g.Id,
-                    Name = g.Name,
-                    Cpf = g.Cpf,
-                    Email = g.Email,
-                    Phone = g.Phone,
-                    Kinship = g.Kinship,
-                    ChildId = g.ChildId
-                }).ToList()
-            };
-            return childDto;
+            return MapToDto(child);
         }
 
         public async Task<ChildDto> RegisterChildAsync(CreateChildDto dto)
@@ -89,20 +46,25 @@ namespace Sofis.Api.Application.Services
             {
                 throw new ValidationException("Nome é obrigatório");
             }
-            // Comentário - Vinicius: Obter o DateTime atual (apenas a data, com a hora zerada)
-            nowDate = DateTime.Today;
 
-            // Comentário - Vinicius: Converter para DateOnly
-            now = DateOnly.FromDateTime(nowDate);
+            now = DateOnly.FromDateTime(DateTime.Today);
+
             if (dto.BirthDate > now)
             {
                 throw new ValidationException("Data de nascimento não pode ser no futuro");
             }
+
             var familyExists = await _familyRepository.GetByIdAsync(dto.FamilyId);
+            if (familyExists == null)
+            {
+                throw new ValidationException($"Família com ID {dto.FamilyId} não encontrada");
+            }
+
             if (existingChild != null)
             {
                 throw new ValidationException("CPF já cadastrado");
             }
+
             var child = new Child
             {
                 Name = dto.Name.Trim(),
@@ -117,81 +79,68 @@ namespace Sofis.Api.Application.Services
                 DadName = dto.DadName,
                 FamilyId = dto.FamilyId
             };
-            await _childRepository.AddAsync(child);
-            var resultDto = MapToDto(child);
-            return resultDto;
 
+            await _childRepository.AddAsync(child);
+
+            return MapToDto(child);
         }
 
         public async Task<ChildDto> UpdateChildAsync(Guid id, UpdateChildDto dto)
         {
             var existingChild = await _childRepository.GetByIdAsync(id);
+
             if (existingChild == null)
             {
                 throw new Exception("Criança não encontrada");
             }
+
             if (string.IsNullOrWhiteSpace(dto.Name))
             {
                 throw new ValidationException("Nome é obrigatório");
             }
-            // Comentário - Vinicius: Obter o DateTime atual (apenas a data, com a hora zerada)
-            nowDate = DateTime.Today;
 
-            // Comentário - Vinicius: Converter para DateOnly
-            now = DateOnly.FromDateTime(nowDate);
+            now = DateOnly.FromDateTime(DateTime.Today);
+
             if (dto.BirthDate > now)
             {
                 throw new ValidationException("Data de nascimento não pode ser no futuro");
             }
-            var child = new Child
+
+            existingChild.Name = dto.Name.Trim();
+            existingChild.BirthDate = dto.BirthDate;
+            existingChild.Responsible = dto.Responsible.Trim();
+            existingChild.CodigoEol = dto.CodigoEol;
+            existingChild.Endereco = dto.Endereco;
+            existingChild.UnidadeEscolar = dto.UnidadeEscolar;
+            existingChild.AnoEscolar = dto.AnoEscolar;
+            existingChild.MomName = dto.MomName;
+            existingChild.DadName = dto.DadName;
+            existingChild.Cpf = dto.Cpf;
+
+
+            await _childRepository.UpdateAsync(existingChild);
+
+            return MapToDto(existingChild);
+        }
+
+
+        public async Task<ChildDto?> GetByCpfASync(string cpf)
+        {
+            var child = await _childRepository.GetByCpfAsync(cpf);
+
+            if (child == null)
             {
-                Name = dto.Name.Trim(),
-                BirthDate = dto.BirthDate,
-                Responsible = dto.Responsible.Trim(),
-                CodigoEol = dto.CodigoEol,
-                Endereco = dto.Endereco,
-                UnidadeEscolar = dto.UnidadeEscolar,
-                AnoEscolar = dto.AnoEscolar,
-                MomName = dto.MomName,
-                DadName = dto.DadName,
-                Cpf = dto.Cpf
-            };
-            await _childRepository.UpdateAsync(child);
+                return null;
+            }
+
             return MapToDto(child);
         }
 
-        
-        public async Task<ChildDto?> GetByCpfASync(string cpf)
-        {
-            var child = _childRepository.GetByCpfAsync(cpf);
-            if (child == null)
-            {
-                return await Task.FromResult<ChildDto?>(null);
-            }
-            return await Task.FromResult<ChildDto?>(MapToDto(child.Result));
-        }
         public async Task<IEnumerable<ChildDto>> GetByNameAsync(string name)
         {
             var childs = await _childRepository.GetByNameAsync(name);
             return childs.Select(MapToDto);
         }
-
-        //public async Task<ChildDto> UpdateChildAsync(Guid id, UpdateChildDto dto)
-        //{
-        //    var existingChild = await _childRepository.GetByIdAsync(id);
-        //    if (existingChild == null)
-        //    {
-        //        throw new Exception("Criança não encontrada");
-        //    }
-        //    existingChild.Name = dto.Name;
-        //    existingChild.Cpf = dto.Cpf;
-        //    existingChild.BirthDate = dto.BirthDate;
-        //    existingChild.DadName = dto.DadName;
-        //    existingChild.MomName = dto.MomName;
-        //    existingChild.Responsible = dto.Responsible;
-        //    await _childRepository.UpdateAsync(existingChild);
-        //    return MapToDto(existingChild);
-        //}
 
         public async Task DeleteChildAsync(Guid id)
         {
@@ -203,8 +152,21 @@ namespace Sofis.Api.Application.Services
             await _childRepository.DeleteAsync(id);
         }
 
-        private ChildDto MapToDto(Child c) =>
-            new ChildDto
+
+        private GuardianDto MapGuardianToDto(Guardian g) => new GuardianDto
+        {
+            Id = g.Id,
+            Name = g.Name,
+            Cpf = g.Cpf,
+            Email = g.Email,
+            Phone = g.Phone,
+            Kinship = g.Kinship,
+        };
+
+
+        private ChildDto MapToDto(Child c)
+        {
+            var dto = new ChildDto
             {
                 Id = c.Id,
                 Name = c.Name,
@@ -218,8 +180,17 @@ namespace Sofis.Api.Application.Services
                 UnidadeEscolar = c.UnidadeEscolar,
                 AnoEscolar = c.AnoEscolar,
                 FamilyId = c.FamilyId,
-                Guardians = new List<GuardianDto>()
+                Guardians = c.Guardians?
+                    .Select(MapGuardianToDto)
+                    .ToList() ?? new List<GuardianDto>()
             };
 
+            if (c.Family != null)
+            {
+                dto.FamilyName = c.Family.Name;
+            }
+
+            return dto;
+        }
     }
 }
