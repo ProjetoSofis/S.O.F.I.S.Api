@@ -6,9 +6,10 @@ namespace Sofis.Api.Application.Interfaces
     {
         Task<Guardian> AddAsync(Guardian guardian);
         Task<Guardian?> GetByIdAsync(Guid id);
-        Task<ICollection<Guardian>> GetAllAsync();
+        Task<Guardian?> GetByCpfAsync(string cpf);
+        Task<IEnumerable<Guardian>> GetAllAsync();
+        Task<IEnumerable<Guardian>> GetByChildIdAsync(Guid childId);
         Task UpdateAsync(Guardian guardian);
         Task DeleteAsync(Guid id);
-        Task<Guardian?> GetByCpfAsync(string cpf);
     }
 }
