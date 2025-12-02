@@ -76,10 +76,11 @@ namespace Sofis.Api.Application.Services
         }
         private FamilyDto MapToDto(Family f) => new FamilyDto
         {
+            Id = f.Id,
             Name = f.Name,
             Address = f.Address,
             GuardianCount = f.Guardians.Count,
-            ChildrenCount = f.RelationedChildren.Count
+            ChildrenCount = f.RelationedChildren.Count,
         };
     }
 }
