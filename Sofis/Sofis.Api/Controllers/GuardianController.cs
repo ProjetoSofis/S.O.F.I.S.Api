@@ -14,8 +14,13 @@ namespace Sofis.Api.Controllers
             this._logger = logger;
         }
         [HttpPost]
+        [Route("adicionarGuardiao")]
         public async Task<IActionResult> CreateGuardian([FromBody] CreateGuardianDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             try
             {
                 var createdGuardian = await _guardianService.CreateGuardianAsync(dto);
@@ -57,6 +62,7 @@ namespace Sofis.Api.Controllers
         }
 
         [HttpGet]
+        [Route("buscar-todos")]
         public async Task<IActionResult> GetAllGuardians()
         {
             try
