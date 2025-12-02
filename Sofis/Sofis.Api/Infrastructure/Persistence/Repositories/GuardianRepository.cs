@@ -27,30 +27,37 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
             }
         }
 
-        public async Task<ICollection<Guardian>> GetAllAsync()
+        public async Task<IEnumerable<Guardian>> GetAllAsync()
+        {
+            return await _context.Guardians.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Guardian>> GetByChildIdAsync(Guid childId)
         {
             return await _context.Guardians
-                .Include(g => g.Family)
+                .Where(g => g.ChildId == childId)
                 .ToListAsync();
         }
 
         public Task<Guardian?> GetByCpfAsync(string cpf)
         {
             return _context.Guardians
-                .Include(g => g.Family)
                 .FirstOrDefaultAsync(g => g.Cpf == cpf);
         }
 
         public async Task<Guardian?> GetByIdAsync(Guid id)
         {
-            return await _context.Guardians
-                .Include(g => g.Family)
-                .FirstOrDefaultAsync(g => g.Id == id);
+            return await _context.Guardians.FindAsync(id);
         }
         public async Task UpdateAsync(Guardian guardian)
         {
             _context.Guardians.Update(guardian);
             await _context.SaveChangesAsync();
+        }
+
+        Task<IEnumerable<Guardian>> IGuardianRepository.GetAllAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }
