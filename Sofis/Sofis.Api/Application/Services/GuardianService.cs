@@ -61,7 +61,7 @@ namespace Sofis.Api.Application.Services
             Kinship = g.Kinship,
             Phone = g.Phone,
             Email = g.Email,
-            ChildId = g.FamilyId
+            ChildId = g.ChildId
         };
     }
 }
