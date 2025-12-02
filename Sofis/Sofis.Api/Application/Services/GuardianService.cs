@@ -56,11 +56,14 @@ namespace Sofis.Api.Application.Services
         }
         private GuardianDto MapToDto(Guardian g) => new GuardianDto
         {
+            Id = g.Id,
             Name = g.Name,
             Cpf = g.Cpf,
             Kinship = g.Kinship,
             Phone = g.Phone,
             Email = g.Email,
+            ChildId = g.Children.FirstOrDefault()?.Id ?? Guid.Empty
+
         };
     }
 }
