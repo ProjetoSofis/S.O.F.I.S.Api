@@ -35,13 +35,15 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
         public async Task<IEnumerable<Guardian>> GetByChildIdAsync(Guid childId)
         {
             return await _context.Guardians
-                .Where(g => g.ChildId == childId)
+                .Where(g => g.Children.Any(c => c.Id == childId))
                 .ToListAsync();
         }
 
         public Task<Guardian?> GetByCpfAsync(string cpf)
         {
             return _context.Guardians
+                .Include(g => g.Children)
+                .ThenInclude(c => c.Family)
                 .FirstOrDefaultAsync(g => g.Cpf == cpf);
         }
 
@@ -55,9 +57,6 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
             await _context.SaveChangesAsync();
         }
 
-        Task<IEnumerable<Guardian>> IGuardianRepository.GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }
