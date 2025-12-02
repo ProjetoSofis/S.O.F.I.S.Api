@@ -25,6 +25,7 @@ namespace Sofis.Api.Application.Services
             {
                 Name = dto.Name,
                 Cpf = dto.Cpf,
+                Kinship = dto.Kinship,
                 Phone = dto.Phone ?? string.Empty,
                 Email = dto.Email,
                 ChildId = dto.ChildId
@@ -57,6 +58,7 @@ namespace Sofis.Api.Application.Services
         {
             Name = g.Name,
             Cpf = g.Cpf,
+            Kinship = g.Kinship,
             Phone = g.Phone,
             Email = g.Email,
             ChildId = g.FamilyId
