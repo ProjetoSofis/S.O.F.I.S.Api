@@ -1,4 +1,5 @@
-﻿using Sofis.Api.Domain.Entities;
+﻿using Sofis.Api.Application.Dtos.GuardianDtos;
+using Sofis.Api.Domain.Entities;
 
 namespace Sofis.Api.Application.Dtos
 {
@@ -15,6 +16,9 @@ namespace Sofis.Api.Application.Dtos
         public string AnoEscolar { get; set; } = string.Empty;
         public string MomName { get; set; } = string.Empty;
         public string DadName { get; set; } = string.Empty;
+        public string FamilyName { get; set; } = string.Empty;
+        public Guid FamilyId { get; set; }
         public List<Report> reports { get; set; } = new();
+        public ICollection<GuardianDto> Guardians { get; set; }
     }
 }
