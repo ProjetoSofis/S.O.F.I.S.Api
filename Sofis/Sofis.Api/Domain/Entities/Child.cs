@@ -28,6 +28,7 @@ namespace Sofis.Api.Domain.Entities
         //public List<Family> FamilyMembers { get; private set; } = new();
         public Guid? FamilyId { get; set; }
         public Family Family { get; set; }
+        public ICollection<Guardian> Guardians { get; private set; } = new List<Guardian>();
 
         public ICollection<Report> Reports { get; private set; } = new List<Report>();
 

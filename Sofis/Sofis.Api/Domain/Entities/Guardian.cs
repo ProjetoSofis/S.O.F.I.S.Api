@@ -8,8 +8,7 @@
         public string Phone { get; set; }
         public string Email { get; set; }
 
-        public Guid FamilyId { get; set; }
-        public Guid ChildId { get; set; }
+        public ICollection<Child> Children { get; set; } = new List<Child>();
 
     }
 }
