@@ -12,7 +12,7 @@
         public string AnoEscolar { get; set; } = string.Empty;
         public string MomName { get; set; } = string.Empty;
         public string DadName { get; set; } = string.Empty;
-        public Guid FamilyId { get; set; }
+        public Guid? FamilyId { get; set; }
 
 
 
