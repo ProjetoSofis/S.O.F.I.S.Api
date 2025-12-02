@@ -13,9 +13,9 @@ namespace Sofis.Api.Application
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IPasswordService, PasswordService>();
             services.AddScoped<IFamilyService, FamilyService>();
+            services.AddScoped<IGuardianService, GuardianService>();
             services.AddSingleton<ITokenService, TokenService>();
             services.AddScoped<IAuthService, AuthService>();
-
             return services;
         }
     }
