@@ -1,6 +1,7 @@
 ﻿using Sofis.Api.Application.Contracts;
 using Sofis.Api.Application.Dtos;
 using Sofis.Api.Application.Dtos.ChildDtos;
+using Sofis.Api.Application.Dtos.GuardianDtos;
 using Sofis.Api.Application.Interfaces;
 using Sofis.Api.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
@@ -11,13 +12,15 @@ namespace Sofis.Api.Application.Services
     public class ChildService : IChildService
     {
         private readonly IChildRepository _childRepository;
+        private readonly IFamilyRepository _familyRepository;
         private DateTime nowDate = DateTime.Today;
         private DateOnly now = DateOnly.FromDateTime(DateTime.Today);
 
 
-        public ChildService(IChildRepository childRepository)
+        public ChildService(IChildRepository childRepository, IFamilyRepository familyRepository)
         {
             _childRepository = childRepository;
+            _familyRepository = familyRepository;
         }
 
         public async Task<IEnumerable<ChildDto>> GetAllAsync()
@@ -28,7 +31,7 @@ namespace Sofis.Api.Application.Services
         
         public async Task<ChildDto?> GetByIdAsync(Guid id)
         {
-            var child = await _childRepository.GetByIdAsync(id);
+            var child = await _childRepository.GetByIdWithFamilyAndGuardians(id);
             if (child == null)
             {
                 return null;
@@ -52,6 +55,11 @@ namespace Sofis.Api.Application.Services
             {
                 throw new ValidationException("Data de nascimento não pode ser no futuro");
             }
+            var familyExists = await _familyRepository.GetByIdAsync(dto.FamilyId);
+            if (familyExists == null)
+            {
+                throw new ValidationException("Família não encontrada");
+            }
             if (existingChild != null)
             {
                 throw new ValidationException("CPF já cadastrado");
@@ -67,11 +75,12 @@ namespace Sofis.Api.Application.Services
                 UnidadeEscolar = dto.UnidadeEscolar,
                 AnoEscolar = dto.AnoEscolar,
                 MomName = dto.MomName,
-                DadName = dto.DadName
+                DadName = dto.DadName,
+                FamilyId = dto.FamilyId
             };
             await _childRepository.AddAsync(child);
-
             return MapToDto(child);
+
         }
 
         public async Task<ChildDto> UpdateChildAsync(Guid id, UpdateChildDto dto)
@@ -170,19 +179,5 @@ namespace Sofis.Api.Application.Services
                 AnoEscolar = c.AnoEscolar
             };
 
-        public Task<IEnumerable<ChildDto>> GetFamilyMembersByChildIdAsync(Guid childId, Guid familyId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task AssignFamilyToChildAsync(Guid childId, Guid familyId)
-        {
-            var child = await _childRepository.GetByIdAsync(childId);
-            if (child == null)
-            {
-                throw new ValidationException("criança não encontrada");
-            }
-            
-        }
     }
 }
