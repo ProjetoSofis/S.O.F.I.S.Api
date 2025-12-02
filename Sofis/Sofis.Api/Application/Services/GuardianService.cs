@@ -8,18 +8,18 @@ namespace Sofis.Api.Application.Services
     public class GuardianService : IGuardianService
     {
         private readonly IGuardianRepository _guardianRepository;
-        private readonly IFamilyRepository _familyRepository;
-        public GuardianService(IGuardianRepository guardianRepository, IFamilyRepository familyRepository)
+        private readonly IChildRepository _childRepository;
+        public GuardianService(IGuardianRepository guardianRepository, IChildRepository childRepository)
         {
             _guardianRepository = guardianRepository;
-            _familyRepository = familyRepository;
+            _childRepository = childRepository;
         }
         public async Task<GuardianDto> CreateGuardianAsync(CreateGuardianDto dto)
         {
-            var family = await _familyRepository.GetByIdAsync(dto.FamilyId);
-            if (family == null)
+            var child = await _childRepository.GetByIdAsync(dto.ChildId);
+            if (child == null)
             {
-                throw new KeyNotFoundException($"Família com id {dto.FamilyId}");
+                throw new KeyNotFoundException($"Criança com ID {dto.ChildId} não encontrada");
             }
             var guardian = new Guardian
             {
@@ -27,10 +27,10 @@ namespace Sofis.Api.Application.Services
                 Cpf = dto.Cpf,
                 Phone = dto.Phone ?? string.Empty,
                 Email = dto.Email,
-                FamilyId = dto.FamilyId
+                ChildId = dto.ChildId
             };
-            var createdGuardian = await _guardianRepository.AddAsync(guardian);
-            return MapToDto(createdGuardian);
+            await _guardianRepository.AddAsync(guardian);
+            return MapToDto(guardian);
         }
 
         public async Task DeleteGuardianAsync(Guid id)
@@ -45,17 +45,7 @@ namespace Sofis.Api.Application.Services
 
         public async Task<GuardianDto?> GetGuardianByIdAsync(Guid id)
         {
-            var guardian = await _guardianRepository.GetByIdAsync(id);
-            if (guardian == null)
-            {
-                throw new KeyNotFoundException($"Responsável com id {id} não encontrado.");
-            }
-            var family = await _familyRepository.GetByIdAsync(guardian.FamilyId);
-            if (family == null)
-            {
-                throw new KeyNotFoundException($"Família com id {guardian.FamilyId} não encontrada.");
-            }
-            return MapToDto(guardian);
+            throw new NotImplementedException();
 
         }
 
@@ -69,7 +59,7 @@ namespace Sofis.Api.Application.Services
             Cpf = g.Cpf,
             Phone = g.Phone,
             Email = g.Email,
-            FamilyId = g.FamilyId
+            ChildId = g.FamilyId
         };
     }
 }
