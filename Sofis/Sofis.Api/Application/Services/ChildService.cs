@@ -176,7 +176,8 @@ namespace Sofis.Api.Application.Services
                 CodigoEol = c.CodigoEol,
                 Endereco = c.Endereco,
                 UnidadeEscolar = c.UnidadeEscolar,
-                AnoEscolar = c.AnoEscolar
+                AnoEscolar = c.AnoEscolar,
+                FamilyId = c.FamilyId
             };
 
     }
