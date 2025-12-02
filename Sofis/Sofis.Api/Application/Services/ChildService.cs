@@ -28,7 +28,7 @@ namespace Sofis.Api.Application.Services
             var children = await _childRepository.GetAllAsync();
             return children.Select(MapToDto);
         }
-        
+
         public async Task<ChildDto?> GetByIdAsync(Guid id)
         {
             var child = await _childRepository.GetByIdWithFamilyAndGuardians(id);
@@ -36,24 +36,49 @@ namespace Sofis.Api.Application.Services
             {
                 return null;
             }
-            var childDto = MapToDto(child);
-            if (child.Family != null)
+            //var childDto = MapToDto(child);
+            //if (child.Family != null)
+            //{
+            //    childDto.FamilyName = child.Family.Name;
+            //    if (child.Family.Guardians != null)
+            //    {
+            //        childDto.Guardians = child.Family.Guardians.Select(g => new GuardianDto
+            //        {
+            //            Id = g.Id,
+            //            Name = g.Name,
+            //            Cpf = g.Cpf,
+            //            Kinship = g.Kinship,
+            //            Email = g.Email,
+            //            Phone = g.Phone,
+            //            FamilyId = g.FamilyId,
+            //            FamilyName = child.Family.Name
+            //        }).ToList();
+            //    }
+            //}
+            var childDto = new ChildDto
             {
-                childDto.FamilyName = child.Family.Name;
-                if (child.Family.Guardians != null)
+                Id = child.Id,
+                Name = child.Name,
+                Cpf = child.Cpf,
+                BirthDate = child.BirthDate,
+                Responsible = child.Responsible,
+                CodigoEol = child.CodigoEol,
+                Endereco = child.Endereco,
+                UnidadeEscolar = child.UnidadeEscolar,
+                AnoEscolar = child.AnoEscolar,
+                MomName = child.MomName,
+                DadName = child.DadName,
+                Guardians = child.Family.Guardians.Select(g => new GuardianDto
                 {
-                    childDto.Guardians = child.Family.Guardians.Select(g => new GuardianDto
-                    {
-                        Id = g.Id,
-                        Name = g.Name,
-                        Cpf = g.Cpf,
-                        Email = g.Email,
-                        Phone = g.Phone,
-                        FamilyId = g.FamilyId,
-                        FamilyName = child.Family.Name
-                    }).ToList();
-                }
-            }
+                    Id = g.Id,
+                    Name = g.Name,
+                    Cpf = g.Cpf,
+                    Email = g.Email,
+                    Phone = g.Phone,
+                    Kinship = g.Kinship,
+                    ChildId = g.ChildId
+                }).ToList()
+            };
             return childDto;
         }
 
@@ -74,10 +99,6 @@ namespace Sofis.Api.Application.Services
                 throw new ValidationException("Data de nascimento não pode ser no futuro");
             }
             var familyExists = await _familyRepository.GetByIdAsync(dto.FamilyId);
-            if (familyExists == null)
-            {
-                throw new ValidationException("Família não encontrada");
-            }
             if (existingChild != null)
             {
                 throw new ValidationException("CPF já cadastrado");
