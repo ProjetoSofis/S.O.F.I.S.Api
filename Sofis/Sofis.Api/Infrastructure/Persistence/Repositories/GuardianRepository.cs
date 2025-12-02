@@ -14,6 +14,17 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
         public async Task<Guardian> AddAsync(Guardian guardian)
         {
             await _context.Guardians.AddAsync(guardian);
+            if (guardian.Children != null)
+            {
+                foreach (var child in guardian.Children)
+                {
+                    if (child.Id != Guid.Empty)
+                    {
+
+                        _context.Entry(child).State = EntityState.Unchanged;
+                    }
+                }
+            }
             await _context.SaveChangesAsync();
             return guardian;
         }
