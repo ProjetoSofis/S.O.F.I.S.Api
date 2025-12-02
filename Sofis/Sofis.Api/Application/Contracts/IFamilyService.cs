@@ -10,6 +10,6 @@ namespace Sofis.Api.Application.Contracts
         Task<FamilyDto?> GetFamilyByIdAsync(Guid id);
         Task UpdateFamilyAsync(Guid id, CreateFamilyDto dto);
         Task DeleteFamilyAsync(Guid id);
-        Task<FamilyDto?> GetFamilyByGuardianCpfAsync(string cpf);
+        Task<FamilyDto> GetFamilyByGuardianCpfAsync(string cpf);
     }
 }
