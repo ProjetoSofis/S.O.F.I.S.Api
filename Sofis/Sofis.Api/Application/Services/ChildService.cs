@@ -36,7 +36,25 @@ namespace Sofis.Api.Application.Services
             {
                 return null;
             }
-            return MapToDto(child);
+            var childDto = MapToDto(child);
+            if (child.Family != null)
+            {
+                childDto.FamilyName = child.Family.Name;
+                if (child.Family.Guardians != null)
+                {
+                    childDto.Guardians = child.Family.Guardians.Select(g => new GuardianDto
+                    {
+                        Id = g.Id,
+                        Name = g.Name,
+                        Cpf = g.Cpf,
+                        Email = g.Email,
+                        Phone = g.Phone,
+                        FamilyId = g.FamilyId,
+                        FamilyName = child.Family.Name
+                    }).ToList();
+                }
+            }
+            return childDto;
         }
 
         public async Task<ChildDto> RegisterChildAsync(CreateChildDto dto)
@@ -79,7 +97,8 @@ namespace Sofis.Api.Application.Services
                 FamilyId = dto.FamilyId
             };
             await _childRepository.AddAsync(child);
-            return MapToDto(child);
+            var resultDto = MapToDto(child);
+            return resultDto;
 
         }
 
@@ -177,7 +196,8 @@ namespace Sofis.Api.Application.Services
                 Endereco = c.Endereco,
                 UnidadeEscolar = c.UnidadeEscolar,
                 AnoEscolar = c.AnoEscolar,
-                FamilyId = c.FamilyId
+                FamilyId = c.FamilyId,
+                Guardians = new List<GuardianDto>()
             };
 
     }
