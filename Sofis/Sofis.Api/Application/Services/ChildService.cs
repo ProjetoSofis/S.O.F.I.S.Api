@@ -2,6 +2,7 @@
 using Sofis.Api.Application.Dtos;
 using Sofis.Api.Application.Dtos.ChildDtos;
 using Sofis.Api.Application.Dtos.GuardianDtos;
+using Sofis.Api.Application.Dtos.ReportDtos;
 using Sofis.Api.Application.Interfaces;
 using Sofis.Api.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
@@ -163,6 +164,17 @@ namespace Sofis.Api.Application.Services
             Kinship = g.Kinship,
         };
 
+        private ReportDto MapReportToDto(Report r) => new ReportDto
+        {
+            Id = r.Id,
+            EmployeeId = r.EmployeeId,
+            Title = r.Title,
+            Description = r.Description,
+            ChildId = r.ChildId,
+            CreatedAt = r.CreatedAt,
+            UpdatedAt = r.UpdatedAt
+        };
+
 
         private ChildDto MapToDto(Child c)
         {
@@ -183,7 +195,9 @@ namespace Sofis.Api.Application.Services
                 Guardians = c.Guardians?
                     .Select(MapGuardianToDto)
                     .ToList() ?? new List<GuardianDto>(),
-                reports = c.Reports?.ToList() ?? new List<Report>()
+                reports = c.Reports?
+                    .Select(MapReportToDto)
+                    .ToList() ?? new List<ReportDto>()
             };
 
             if (c.Family != null)
