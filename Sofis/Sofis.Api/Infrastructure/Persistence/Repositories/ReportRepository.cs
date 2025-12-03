@@ -11,10 +11,11 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
         {
             _context = context;
         }
-        public async Task AddAsync(Report report)
+        public async Task<Report> AddAsync(Report report)
         {
             await _context.Reports.AddAsync(report);
             await _context.SaveChangesAsync();
+            return report;
         }
 
         public async Task DeleteAsync(Guid id)
@@ -37,6 +38,8 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
         public async Task<Report?> GetByIdAsync(Guid id)
         {
             return await _context.Reports
+                .Include(r => r.Child)
+                .Include(r => r.Employee)
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
 
@@ -45,7 +48,7 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
             var existingReport = _context.Reports.Find(report.Id);
             if (existingReport != null)
             {
-                _context.Reports.Update(existingReport);
+                _context.Reports.Update(report);
                 await _context.SaveChangesAsync();
             }
         }
