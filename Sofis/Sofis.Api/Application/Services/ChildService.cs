@@ -31,12 +31,23 @@ namespace Sofis.Api.Application.Services
 
         public async Task<ChildDto?> GetByIdAsync(Guid id)
         {
-            var child = await _childRepository.GetByIdWithFamilyAndGuardians(id);
-            if (child == null)
+            var childWithFamilyAndGuardians = await _childRepository.GetByIdWithFamilyAndGuardians(id);
+            var childWithReports = await _childRepository.GetByIdWithReportsAsync(id);
+
+            if (childWithFamilyAndGuardians == null)
             {
                 return null;
             }
-            return MapToDto(child);
+
+            if (childWithReports?.Reports != null)
+            {
+                foreach (var report in childWithReports.Reports)
+                {
+                    childWithFamilyAndGuardians.Reports.Add(report);
+                }
+            }
+            
+            return MapToDto(childWithFamilyAndGuardians);
         }
 
         public async Task<ChildDto> RegisterChildAsync(CreateChildDto dto)
@@ -182,7 +193,8 @@ namespace Sofis.Api.Application.Services
                 FamilyId = c.FamilyId,
                 Guardians = c.Guardians?
                     .Select(MapGuardianToDto)
-                    .ToList() ?? new List<GuardianDto>()
+                    .ToList() ?? new List<GuardianDto>(),
+                reports = c.Reports?.ToList() ?? new List<Report>()
             };
 
             if (c.Family != null)
