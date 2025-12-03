@@ -19,6 +19,7 @@
         public bool IsTwoFactorEnabled { get; set; } = false;
         public string? TwoEmailCode { get; set; }
         public DateTime? TwoFactorEmailCodeExpiration { get; set; }
+        public ICollection<Report> Reports { get; set; } = new List<Report> ();
 
         public Employee() { }
 
