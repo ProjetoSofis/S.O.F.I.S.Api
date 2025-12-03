@@ -39,15 +39,9 @@ namespace Sofis.Api.Application.Services
                 return null;
             }
 
-            if (childWithReports?.Reports != null)
-            {
-                foreach (var report in childWithReports.Reports)
-                {
-                    childWithFamilyAndGuardians.Reports.Add(report);
-                }
-            }
             
-            return MapToDto(childWithFamilyAndGuardians);
+            
+            return MapToDto(childWithReports);
         }
 
         public async Task<ChildDto> RegisterChildAsync(CreateChildDto dto)
