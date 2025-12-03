@@ -17,7 +17,7 @@ namespace Sofis.Api.Application.Services
 
         public async Task<ReportDto> CreateReportAsync(CreateReportDto dto)
         {
-            var existingReport = _reportRepository.GetByIdAsync(dto.Id);
+            var existingReport = await _reportRepository.GetByIdAsync(dto.Id);
             if (existingReport != null)
             {
                 throw new Exception($"Relatório com id {dto.Id} já existe.");
@@ -35,7 +35,7 @@ namespace Sofis.Api.Application.Services
 
         public async Task DeleteReportAsync(Guid id)
         {
-            var report = _reportRepository.GetByIdAsync(id);
+            var report = await _reportRepository.GetByIdAsync(id);
             if (report == null)
             {
                 throw new Exception("Relatório não encontrado");
@@ -46,6 +46,7 @@ namespace Sofis.Api.Application.Services
         public async Task<ReportDto?> GetReportByIdAsync(Guid id)
         {
             var report = await _reportRepository.GetByIdAsync(id);
+            
             if (report == null)
             {
                 throw new Exception("Relatório não encontrado");
