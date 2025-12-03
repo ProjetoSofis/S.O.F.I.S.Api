@@ -64,6 +64,7 @@ namespace Sofis.Api.Application.Services
         {
             return new ReportDto
             {
+                Id = dto.Id,
                 EmployeeId = dto.EmployeeId,
                 ChildId = dto.ChildId,
                 Title = dto.Title,
