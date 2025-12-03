@@ -78,7 +78,7 @@ namespace Sofis.Api.Application.Services
                 AnoEscolar = dto.AnoEscolar,
                 MomName = dto.MomName,
                 DadName = dto.DadName,
-                FamilyId = dto.FamilyId
+
             };
 
             await _childRepository.AddAsync(child);
