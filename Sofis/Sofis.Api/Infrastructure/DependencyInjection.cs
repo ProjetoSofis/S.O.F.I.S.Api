@@ -20,6 +20,7 @@ namespace Sofis.Api.Infrastructure
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IFamilyRepository, FamilyRepository>();
             services.AddScoped<IGuardianRepository, GuardianRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IEmailService, SmtpEmailService>();
             services.AddScoped<IPasswordService, PasswordService>();
             services.AddScoped<ITokenService, TokenService>();
