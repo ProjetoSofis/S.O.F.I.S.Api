@@ -75,5 +75,12 @@ namespace Sofis.Api.Infrastructure.Persistence.Repositories
                 .Include(c => c.Guardians) 
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
+
+        public async Task<Child?> GetByIdWithReportsAsync(Guid id)
+        {
+            return await _context.Child
+                .Include(c => c.Reports)
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
     }
 }
