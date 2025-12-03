@@ -31,17 +31,12 @@ namespace Sofis.Api.Application.Services
 
         public async Task<ChildDto?> GetByIdAsync(Guid id)
         {
-            var childWithFamilyAndGuardians = await _childRepository.GetByIdWithFamilyAndGuardians(id);
-            var childWithReports = await _childRepository.GetByIdWithReportsAsync(id);
-
-            if (childWithFamilyAndGuardians == null)
+            var child = await _childRepository.GetByIdWithFamilyGuardiansAndReports(id);
+            if (child == null)
             {
                 return null;
             }
-
-            
-            
-            return MapToDto(childWithReports);
+            return MapToDto(child);
         }
 
         public async Task<ChildDto> RegisterChildAsync(CreateChildDto dto)

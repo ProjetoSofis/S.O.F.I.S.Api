@@ -8,8 +8,7 @@ namespace Sofis.Api.Application.Interfaces
         Task<Child?> GetByCpfAsync(string cpf);
         Task<IEnumerable<Child>> GetFamilyMembersByChildIdAsync(Guid childId);
         Task<IEnumerable<Child>> GetByNameAsync(string name);
-        Task<Child?> GetByIdWithFamilyAndGuardians(Guid id);
-        Task<Child?> GetByIdWithReportsAsync(Guid id);
+        Task<Child?> GetByIdWithFamilyGuardiansAndReports(Guid id);
         Task<IEnumerable<Child>> GetAllAsync();
         Task DeleteAsync(Guid id);
         Task UpdateAsync(Child Child);
